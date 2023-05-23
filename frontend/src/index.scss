@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply font-body text-base;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		&::-webkit-scrollbar {
+			@apply w-[6px];
+			-webkit-appearance: none;
+		}
+		&::-webkit-scrollbar-track {
+			@apply bg-[#fcfbff];
+		}
+		&::-webkit-scrollbar-thumb {
+			@apply bg-bg_gradient rounded-lg;
+		}
+	}
+}
+#scrollPane {
+	scroll-margin-block-start: 100px;
+}
+.scroll-bar {
+	&::-webkit-scrollbar {
+		@apply w-[6px];
+		-webkit-appearance: none;
+	}
+	&::-webkit-scrollbar-track {
+		@apply bg-[#fcfbff];
+	}
+	&::-webkit-scrollbar-thumb {
+		@apply bg-slate-400 rounded-md;
+	}
+}
+
+.app-wrapper {
+	@apply bg-white flex overflow-hidden flex-1;
+	transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+.app-main {
+	@apply flex flex-1 flex-col relative min-w-0 min-h-screen;
+}
+.app-content {
+	@apply flex flex-1 flex-col p-0;
+	transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+.app-content--inner {
+	@apply py-10 px-8 flex flex-1;
+}
+
+// Custom TextEditor styles
+
+.ql-toolbar.ql-snow {
+	@apply font-body font-medium bg-gray-300 rounded-t-[5px];
+}
+.ql-picker.ql-expanded .ql-picker-options {
+	@apply rounded-md;
+}
+.ql-tooltip.ql-editing {
+	@apply rounded-md text-icon;
+}
+.ql-container.ql-snow {
+	@apply border-e rounded-bl-md rounded-br-md bg-slate-50;
+	.ql-editor {
+		@apply h-[220px] overflow-y-auto p-2;
+		&::-webkit-scrollbar {
+			@apply w-[6px];
+			-webkit-appearance: none;
+		}
+		&::-webkit-scrollbar-track {
+			@apply bg-transparent;
+		}
+		&::-webkit-scrollbar-thumb {
+			@apply bg-slate-400 rounded-md;
+		}
+		&.ql-blank::before {
+			@apply font-semibold not-italic text-base;
+		}
+	}
+}
