@@ -59,8 +59,9 @@ export interface JWTDecoded {
 }
 
 export interface AuthUser {
-  id: string;
-  fullName: string;
+  _id: string;
+  order_id: string;
+  full_name: string;
   email: string;
   phone?: string;
   avatar?: string;

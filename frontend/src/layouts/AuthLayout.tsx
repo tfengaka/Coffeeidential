@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Backdrop, Loading } from '~/components';
 
@@ -8,24 +8,18 @@ import { useAppSelector } from '~/redux';
 
 function AuthLayout() {
   const navigate = useNavigate();
-  const { getUserDataFromToken } = useAuth();
+  const { loading, handleGetMe } = useAuth();
   const user = useAppSelector((state) => state.auth.user);
-  const accessToken = useAppSelector((state) => state.auth.accessToken);
-  const [loading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
     setTimeout(() => {
       if (user) {
-        navigate(router.dashboard.profile);
-        setLoading(false);
+        navigate(router.dashboard.root);
       } else {
         if (accessToken) {
-          getUserDataFromToken(accessToken, () => {
-            setLoading(false);
-            navigate(router.dashboard.profile);
-          });
+          handleGetMe(() => navigate(router.dashboard.root));
         }
-        setLoading(false);
       }
     }, 1000);
 

@@ -31,7 +31,7 @@ function Topbar() {
             onClick={() => setOpenMenu(!openMenu)}
           >
             <div className="hidden pr-2 text-right md:block">
-              <p className="font-bold text-icon">{user?.fullName}</p>
+              <p className="font-bold text-icon">{user?.full_name}</p>
               <span className="font-medium text-icon opacity-70">Nhà sản xuất</span>
             </div>
             <div className="relative p-0">
@@ -46,7 +46,7 @@ function Topbar() {
             } absolute right-0 w-full py-2 rounded-md -bottom-23 shadow-dropdown`}
           >
             <h6 className="px-2 pb-2 mb-2 text-sm font-medium border-b border-slate-200 text-slate-500">
-              Xin chào, <span className="text-base font-bold text-primary">{user?.fullName}</span>
+              Xin chào, <span className="text-base font-bold text-primary">{user?.full_name}</span>
             </h6>
             <Link
               to={router.dashboard.profile}

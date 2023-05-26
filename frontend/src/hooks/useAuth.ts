@@ -1,78 +1,66 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import AuthApi from '~/api/AuthApi';
 
 import router from '~/constants/routers';
-import { SIGN_IN, SIGN_UP } from '~/graphql/mutations';
-import { GET_USER_BY_ID } from '~/graphql/queries';
 import { useAppDispatch } from '~/redux';
-import { setUser, signIn, signOut } from '~/redux/reducers/authSlice';
-import { AuthResponse, AuthUser, SignInForm, SignUpInput } from '~/types';
-import { getUserIDFromToken } from '~/utils';
+import { signIn, signOut, setMe } from '~/redux/reducers/authSlice';
+import { SignInForm, SignUpInput } from '~/types';
 
 export default function useAuth() {
   const dispath = useAppDispatch();
   const navigate = useNavigate();
-  const [isError, setIsError] = useState(false);
-  const [signInMutate] = useMutation<{ authToken: AuthResponse }>(SIGN_IN);
-  const [signUpMutate] = useMutation<{ authToken: AuthResponse }>(SIGN_UP);
-  const [getUserData] = useLazyQuery<{ user: AuthUser }>(GET_USER_BY_ID);
+  const [loading, setLoading] = useState(false);
+  const [error, setIsError] = useState(false);
 
-  function getUserDataFromToken(token: string, callback: () => void) {
-    getUserData({
-      variables: { id: getUserIDFromToken(token) },
-      onCompleted: ({ user }) => {
-        dispath(setUser({ user }));
-        callback();
-      },
-      onError: (error) => {
-        toast.error(error.message);
-        setIsError(true);
-        console.error(error);
-      },
-    });
+  async function handleGetMe(callback?: () => void) {
+    setLoading(true);
+    try {
+      const res = await AuthApi.getMe();
+      dispath(setMe({ user: res.user }));
+      if (callback) callback();
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleSignIn(form: SignInForm, callback: () => void) {
-    signInMutate({
-      variables: { form },
-      onCompleted: ({ authToken }) => {
-        localStorage.setItem('refresh_token', authToken.refreshToken);
-        dispath(signIn({ accessToken: authToken.token }));
-        getUserDataFromToken(authToken.token, () => {
-          callback();
-        });
-      },
-      onError: (error) => {
-        toast.error(error.message);
-        setIsError(true);
-        console.error(error);
-      },
-    });
+  async function handleSignIn(form: SignInForm) {
+    setLoading(true);
+    try {
+      const res = await AuthApi.signIn(form);
+      dispath(signIn({ user: res.user, access_token: res.access_token }));
+      navigate(router.dashboard.root);
+      toast.success('Đăng nhập thành công!');
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+      toast.error('Đăng nhập thất bại!');
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleSignUp(form: SignUpInput, callback: () => void) {
-    signUpMutate({
-      variables: { form },
-      onCompleted: ({ authToken }) => {
-        localStorage.setItem('refresh_token', authToken.refreshToken);
-        dispath(signIn({ accessToken: authToken.token }));
-        getUserDataFromToken(authToken.token, () => {
-          callback();
-        });
-      },
-      onError: (error) => {
-        toast.error(error.message);
-        setIsError(true);
-        console.error(error);
-      },
-    });
+  async function handleSignUp(form: SignUpInput) {
+    setLoading(true);
+    try {
+      const res = await AuthApi.signUp(form);
+      toast.success(res.message);
+      navigate(router.auth.signIn);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+      toast.error('Đăng ký thất bại!\nVui lòng thử lại!');
+    } finally {
+      setLoading(false);
+    }
   }
 
   function hangleSignOut() {
     dispath(signOut());
-    localStorage.removeItem('refresh_token');
     navigate(router.auth.signIn);
   }
 
@@ -81,11 +69,12 @@ export default function useAuth() {
   }
 
   return {
-    isError,
+    loading,
+    error,
+    handleGetMe,
     handleSignIn,
     handleSignUp,
     hangleSignOut,
     handleUpdateInfo,
-    getUserDataFromToken,
   };
 }

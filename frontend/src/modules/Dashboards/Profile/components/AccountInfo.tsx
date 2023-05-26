@@ -7,7 +7,7 @@ interface IAccountInfoProps extends IContentPanelProps {
 }
 
 function AccountInfo({ isActive, user }: IAccountInfoProps) {
-  const [companyName, setCompanyName] = useState(user?.fullName);
+  const [companyName, setCompanyName] = useState(user?.full_name);
   const [companyDesc, setCompanyDesc] = useState('');
 
   return (

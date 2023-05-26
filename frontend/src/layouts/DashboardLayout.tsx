@@ -1,4 +1,4 @@
-import { Fragment, useLayoutEffect, useState } from 'react';
+import { Fragment, useLayoutEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import images from '~/assets/images';
 import { Backdrop, Loading } from '~/components';
@@ -9,29 +9,24 @@ import { SideBar, Topbar } from './components';
 
 function DashboardLayout() {
   const navigate = useNavigate();
-  const { isError, getUserDataFromToken } = useAuth();
-
+  const { loading, error, handleGetMe } = useAuth();
   const user = useAppSelector((state) => state.auth.user);
-  const accessToken = useAppSelector((state) => state.auth.accessToken);
-  const [loading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
-    if (user) {
-      setLoading(false);
-    } else {
+    if (!user) {
+      const accessToken = localStorage.getItem('access_token');
       if (accessToken) {
         setTimeout(() => {
-          getUserDataFromToken(accessToken, () => setLoading(false));
+          handleGetMe();
         }, 500);
       } else {
-        setLoading(false);
         navigate(router.auth.signIn);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isError) {
+  if (error) {
     return (
       <div className="app-wrapper !bg-[#f8f8f8] min-h-screen">
         <Backdrop>

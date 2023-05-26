@@ -1,23 +1,27 @@
 import { Schema, model } from 'mongoose';
 
 import { schemaOptions } from '~/models';
-import { IUser } from '~/type';
+import { UserModel } from '~/type';
 
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema<UserModel>(
   {
-    displayID: {
+    order_id: {
       type: String,
       required: true,
       unique: true,
     },
-    fullName: {
+    full_name: {
       type: String,
-      required: [true, 'Full name is required!'],
+      required: true,
     },
     email: {
       type: String,
       unique: true,
-      required: [true, 'Email is required!'],
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     phone: {
       type: String,

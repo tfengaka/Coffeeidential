@@ -12,19 +12,19 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    signIn: (state, action) => {
-      state.accessToken = action.payload.accessToken;
+    signIn: (state, { payload }) => {
+      localStorage.setItem('access_token', payload.access_token);
+      state.user = payload.user;
     },
-    setUser: (state, action) => {
-      state.user = action.payload.user;
+    setMe: (state, { payload }) => {
+      state.user = payload.user;
     },
     signOut: (state) => {
       state.user = initialState.user;
-      state.accessToken = initialState.accessToken;
-      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('access_token');
     },
   },
 });
 
-export const { signIn, signOut, setUser } = authSlice.actions;
+export const { signIn, signOut, setMe } = authSlice.actions;
 export default authSlice.reducer;

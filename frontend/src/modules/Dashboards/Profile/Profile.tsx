@@ -21,8 +21,8 @@ function Profile() {
                 />
               </div>
               <div className="mt-5 font-bold text-center text-icon">
-                <h4 className="my-1 text-base">{user?.fullName}</h4>
-                <h5 className="my-1 text-sm">Mã số: {user?.id}</h5>
+                <h4 className="my-1 text-base">{user?.full_name}</h4>
+                <h5 className="my-1 text-sm">Mã số: {user?.order_id}</h5>
               </div>
             </div>
             <div className="flex flex-col mt-5 gap-y-2">

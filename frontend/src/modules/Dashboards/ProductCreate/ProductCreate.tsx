@@ -1,20 +1,7 @@
-import { useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
-
 import { Button, Card, FormInput, FormRow, FormSelect, QuillEditor, Uploader } from '~/components';
-import { GET_UNIT_DATA } from '~/graphql/queries';
-import { Unit } from '~/types';
 
 function ProductCreate() {
-  const { data: sellingUnit } = useQuery<{ data: Unit[] }>(GET_UNIT_DATA, {
-    variables: { type: 'selling_unit' },
-  });
-  const { data: arabicaType } = useQuery<{ data: Unit[] }>(GET_UNIT_DATA, {
-    variables: { type: 'product_type' },
-  });
-  const { data: expireUnit } = useQuery<{ data: Unit[] }>(GET_UNIT_DATA, {
-    variables: { type: 'expire_unit' },
-  });
   const { control, setValue } = useForm();
   return (
     <div className="w-full h-full">
@@ -27,11 +14,11 @@ function ProductCreate() {
           <form className="w-full">
             <FormRow>
               <FormInput control={control} name="name" title="Tên sản phẩm" required placeholder="Tên sản phẩm" />
-              <FormSelect control={control} name="category" title="Giống cà phê" required options={arabicaType?.data} />
+              <FormSelect control={control} name="category" title="Giống cà phê" required options={[]} />
             </FormRow>
             <FormRow>
               <FormInput control={control} name="price" type="number" title="Giá bán khuyến nghị (VNĐ)" required />
-              <FormSelect control={control} name="unit_price" title="Đơn vị bán" required options={sellingUnit?.data} />
+              <FormSelect control={control} name="unit_price" title="Đơn vị bán" required options={[]} />
             </FormRow>
             <FormRow>
               <FormInput control={control} name="gtin_code" title="Mã GTIN" placeholder="Mã GTIN" />
@@ -43,7 +30,7 @@ function ProductCreate() {
                   title="Thời hạn sử dụng"
                   placeholder="Thời hạn sử dụng"
                 />
-                <FormSelect control={control} name="unit_expire" title="Đơn vị" options={expireUnit?.data} />
+                <FormSelect control={control} name="unit_expire" title="Đơn vị" options={[]} />
               </FormRow>
             </FormRow>
             <FormInput control={control} name="intro" title="Video Giới thiệu" placeholder="Video giới thiệu" />

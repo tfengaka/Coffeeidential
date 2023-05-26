@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import QRCode from 'qrcode';
 import { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -7,20 +6,15 @@ import { Link } from 'react-router-dom';
 import Icons from '~/assets/icons';
 import { Button, Card, FormInput, FormRow, FormSelect, Loading, QuillEditor, TextField, Uploader } from '~/components';
 import router from '~/constants/routers';
-import { GET_UNIT_DATA } from '~/graphql/queries';
+
 import { useAppSelector } from '~/redux';
 import { Unit } from '~/types';
 import { downloadImage } from '~/utils';
 
 function ProductDetail() {
-  const { data: sellingUnit, loading: sellingLoading } = useQuery<{ data: Unit[] }>(GET_UNIT_DATA, {
-    variables: { type: 'selling_unit' },
-  });
-  const { data: expireUnit, loading: expireLoading } = useQuery<{ data: Unit[] }>(GET_UNIT_DATA, {
-    variables: { type: 'expire_unit' },
-  });
   const { control, setValue, handleSubmit } = useForm();
   const [qrData, setQRData] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const product = useAppSelector((state) => state.product.product);
 
@@ -72,7 +66,7 @@ function ProductDetail() {
             Lưu lại
           </Button>
         </div>
-        {expireLoading || sellingLoading ? (
+        {loading ? (
           <div className="flex items-center justify-center w-full h-full ">
             <Loading />
           </div>
@@ -118,13 +112,7 @@ function ProductDetail() {
                 <div className="flex-[40%]">
                   <TextField title="Tên sản phẩm" required disable value={product?.name} />
                   <TextField title="Giống cà phê" required disable value={product?.cf_type} />
-                  <FormSelect
-                    control={control}
-                    name="selling_unit"
-                    title="Đơn vị bán"
-                    required
-                    options={sellingUnit?.data}
-                  />
+                  <FormSelect control={control} name="selling_unit" title="Đơn vị bán" required options={[]} />
                 </div>
               </FormRow>
               <FormRow>
@@ -139,7 +127,7 @@ function ProductDetail() {
                   title="Thời hạn sử dụng"
                   placeholder="Thời hạn sử dụng"
                 />
-                <FormSelect control={control} name="unit_expire" title="Đơn vị" options={expireUnit?.data} />
+                <FormSelect control={control} name="unit_expire" title="Đơn vị" options={[]} />
               </FormRow>
               <FormInput control={control} name="intro_video" title="Video giới thiệu" placeholder="Video giới thiệu" />
               <FormRow>

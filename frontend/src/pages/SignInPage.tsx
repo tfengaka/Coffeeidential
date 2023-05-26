@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Icons from '~/assets/icons';
 import images from '~/assets/images';
@@ -12,7 +12,6 @@ import { SignInForm } from '~/types';
 
 function SignInPage() {
   const { handleSignIn } = useAuth();
-  const navigate = useNavigate();
   const {
     control,
     formState: { errors },
@@ -28,11 +27,7 @@ function SignInPage() {
   });
   const [showPass, setShowPass] = useState(false);
 
-  const onSubmit = handleSubmit((data) =>
-    handleSignIn(data, () => {
-      navigate(router.dashboard.root);
-    })
-  );
+  const onSubmit = handleSubmit((data) => handleSignIn(data));
 
   return (
     <div className="flex items-center">

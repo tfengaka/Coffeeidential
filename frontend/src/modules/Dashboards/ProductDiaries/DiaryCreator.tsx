@@ -1,16 +1,10 @@
-import { useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { Button, Card, FormRow, FormSelect, QuillEditor, TextField, Uploader } from '~/components';
-import { GET_UNIT_DATA } from '~/graphql/queries';
 import { useAppSelector } from '~/redux';
-import { Unit } from '~/types';
 
 function DiaryCreator() {
   const { control } = useForm();
   const product = useAppSelector((state) => state.product.product);
-  const { data: acctionEvents } = useQuery<{ data: Unit[] }>(GET_UNIT_DATA, {
-    variables: { type: 'action_event' },
-  });
 
   return (
     <Card className="w-full p-5 rounded-md h-fit">
@@ -32,13 +26,7 @@ function DiaryCreator() {
             <div className="basis-2/3">
               <TextField title="Mã số" value={product?.id} disable required />
               <TextField title="Sản phẩm" value={product?.name} disable required />
-              <FormSelect
-                title="Loại hành động"
-                control={control}
-                name="action_type"
-                options={acctionEvents?.data}
-                required
-              />
+              <FormSelect title="Loại hành động" control={control} name="action_type" options={[]} required />
             </div>
             <div className="w-full pb-4">
               <span className="text-sm font-semibold font-body text-icon">

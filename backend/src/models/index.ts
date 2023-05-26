@@ -11,7 +11,7 @@ export const connectMongoDB = async () =>
     connectTimeoutMS: 5000,
   });
 
-export const web3 = new Web3(new Web3.providers.HttpProvider(env.GETH_RPC_URL));
+export const web3 = new Web3(new Web3.providers.HttpProvider(env.BLOCKCHAIN_RPC));
 
 export const schemaOptions = {
   toJSON: {
@@ -24,3 +24,5 @@ export const schemaOptions = {
 };
 
 export { default as User } from './User';
+export { default as Unit } from './Unit';
+export { default as ProductType } from './ProductType';

@@ -6,8 +6,9 @@ import diaryReducer from './diarySlice';
 import productReducer from './productSlice';
 
 const persistConfig = {
-  key: 'root',
+  key: 'coffee',
   storage,
+  blacklist: ['auth'],
 };
 
 const rootReducer = persistReducer(

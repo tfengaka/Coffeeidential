@@ -4,7 +4,6 @@ import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import GraphQLProvider from '~/graphql';
 import store, { persistor } from '~/redux';
 import router from '~/routes';
 
@@ -14,21 +13,19 @@ import './index.scss';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ReduxProvider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <GraphQLProvider>
-        <RouterProvider router={router} />
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable={false}
-          pauseOnHover
-          theme="colored"
-        />
-      </GraphQLProvider>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover
+        theme="colored"
+      />
     </PersistGate>
   </ReduxProvider>
 );

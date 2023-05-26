@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Icons from '~/assets/icons';
 import images from '~/assets/images';
@@ -12,7 +12,6 @@ import { SignUpForm } from '~/types';
 
 function SignUpPage() {
   const { handleSignUp } = useAuth();
-  const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
   const {
     control,
@@ -33,9 +32,7 @@ function SignUpPage() {
   });
 
   const onSubmit = handleSubmit((data) => {
-    handleSignUp({ email: data.email, fullName: data.fullName, password: data.password }, () => {
-      navigate(router.dashboard.root);
-    });
+    handleSignUp({ email: data.email, fullName: data.fullName, password: data.password });
   });
 
   return (
