@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { web3 } from '~/models';
-import { verifyToken } from '~/middleware';
 import { HTTP_STATUS } from '~/utils';
+
 import AuthRouter from './auth.route';
 import UnitRouter from './unit.route';
+import ProductRouter from './product.route';
 
 const router = Router();
 
@@ -39,8 +40,8 @@ router.get('/wallets', async (req, res) => {
   }
 });
 
-// Auth Routing
 router.use('/', AuthRouter);
-router.use('/units', verifyToken, UnitRouter);
+router.use('/units', UnitRouter);
+router.use('/product', ProductRouter);
 
 export default router;

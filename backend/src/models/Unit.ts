@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { schemaOptions } from '~/models';
-import { IUnit } from '~/type';
+import { UnitModel } from '~/type';
 
-const UnitSchema = new Schema<IUnit>(
+const UnitSchema = new Schema<UnitModel>(
   {
     type: {
       type: String,
@@ -11,6 +11,11 @@ const UnitSchema = new Schema<IUnit>(
     },
     value: {
       type: String,
+      required: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
       required: true,
     },
   },

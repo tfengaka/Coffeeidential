@@ -6,7 +6,11 @@ const UnitController = {
   getUnitByType: async (req: Request, res: Response) => {
     const { type } = req.query;
     try {
-      const results = await Unit.find({ type });
+      const units = await Unit.find({ type });
+      const results = units.map((unit) => ({
+        _id: unit._id,
+        value: unit.value,
+      }));
       res.status(HTTP_STATUS.OK).json({ data: results });
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
@@ -14,9 +18,9 @@ const UnitController = {
     }
   },
   createUnit: async (req: Request, res: Response) => {
-    const { type, value } = req.body;
+    const { type, value, userID } = req.body;
     try {
-      const unit = new Unit({ type, value });
+      const unit = new Unit({ type, value, createdBy: userID });
       await unit.save();
       res.status(HTTP_STATUS.CREATED).json({ message: 'OK' });
     } catch (error) {

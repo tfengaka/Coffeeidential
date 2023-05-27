@@ -1,13 +1,18 @@
 import { Schema, model } from 'mongoose';
 import { schemaOptions } from '~/models';
-import { IProductType } from '~/type';
+import { ProductTypeModel } from '~/type';
 
-const ProductTypeSchema = new Schema<IProductType>(
+const ProductTypeSchema = new Schema<ProductTypeModel>(
   {
-    type_name: {
+    name: {
       type: String,
       required: true,
       unique: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+      required: true,
     },
   },
   schemaOptions

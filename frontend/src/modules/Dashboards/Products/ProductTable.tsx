@@ -60,8 +60,8 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                 <td className="w-[15%] px-5 py-2">{item.gtin_code ? item.gtin_code : 'Chưa có'}</td>
                 <td className="w-[10%] px-5 py-2">
                   <Tag
-                    text={item.in_production ? 'Đang sản xuất' : 'Ngưng sản xuất'}
-                    type={`${item.in_production ? 'success' : 'danger'}`}
+                    text={item.isProduction ? 'Đang sản xuất' : 'Ngưng sản xuất'}
+                    type={`${item.isProduction ? 'success' : 'danger'}`}
                   />
                 </td>
                 <td className="w-2/12 px-5 py-2">{moment(item.create_at).format('DD/MM/yyyy - hh:mm A')}</td>
@@ -74,7 +74,7 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                     <Icons.Edit />
                     Chỉnh sửa
                   </Link>
-                  {item.in_production ? (
+                  {item.isProduction ? (
                     <Button className="flex items-center px-2 py-[2px] text-xs bg-opacity-25 bg-danger text-danger gap-x-2 hover:opacity-80 !rounded-md min-w-[115px]">
                       <Icons.Close />
                       Vô hiệu hóa

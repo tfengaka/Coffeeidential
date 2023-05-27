@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { schemaOptions } from '~/models';
-import { IProduct } from '~/type';
+import { ProductModel } from '~/type';
 
-const ProductSchema = new Schema<IProduct>(
+const ProductSchema = new Schema<ProductModel>(
   {
     order_id: {
       type: String,
@@ -24,7 +24,7 @@ const ProductSchema = new Schema<IProduct>(
     description: {
       type: String,
     },
-    status: {
+    isProduction: {
       type: Boolean,
       default: true,
     },
@@ -53,6 +53,10 @@ const ProductSchema = new Schema<IProduct>(
       type: Schema.Types.ObjectId,
       ref: 'users',
       required: true,
+    },
+    updatedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
     },
   },
   schemaOptions

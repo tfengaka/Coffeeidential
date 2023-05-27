@@ -18,7 +18,7 @@ export type UserModel = UserData & {
   password: string;
 };
 
-export interface IProduct {
+export interface ProductModel {
   order_id: string;
   name: string;
   price: number;
@@ -26,7 +26,7 @@ export interface IProduct {
   images: string[];
   box_images: string[];
   certificated: string[];
-  status: boolean;
+  isProduction: boolean;
   expired_time: number;
   gtin_code: string;
   intro_video: string;
@@ -34,13 +34,24 @@ export interface IProduct {
   expired_unit: ObjectId;
   product_type: ObjectId;
   producer: ObjectId;
+  updatedBy: ObjectId;
 }
 
-export interface IUnit {
+export interface DiaryModel {
+  action_name: string;
+  descriptions: string;
+  images: string[];
+  tx_hash: string;
+  product: ObjectId;
+}
+
+export interface UnitModel {
   type: string;
   value: string;
+  createdBy: ObjectId;
 }
 
-export interface IProductType {
-  type_name: string;
+export interface ProductTypeModel {
+  name: string;
+  createdBy: ObjectId;
 }

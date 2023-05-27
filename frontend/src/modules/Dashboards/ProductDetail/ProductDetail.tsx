@@ -6,17 +6,27 @@ import { Link } from 'react-router-dom';
 import Icons from '~/assets/icons';
 import { Button, Card, FormInput, FormRow, FormSelect, Loading, QuillEditor, TextField, Uploader } from '~/components';
 import router from '~/constants/routers';
+import { useFetchUnit } from '~/hooks';
 
 import { useAppSelector } from '~/redux';
-import { Unit } from '~/types';
 import { downloadImage } from '~/utils';
 
 function ProductDetail() {
-  const { control, setValue, handleSubmit } = useForm();
-  const [qrData, setQRData] = useState('');
-  const [loading, setLoading] = useState(false);
-
   const product = useAppSelector((state) => state.product.product);
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      selling_unit: product?.selling_unit,
+      unit_expire: product?.expire_unit,
+      expire_time: product?.expire_time,
+      images: product?.images,
+      price: product?.price,
+      gtin_code: product?.gtin_code,
+      intro_video: product?.intro_video,
+      description: product?.description || '',
+    },
+  });
+  const { loading, selling_unit, expiry_unit } = useFetchUnit();
+  const [qrData, setQRData] = useState('');
 
   useEffect(() => {
     // initial QR Code
@@ -38,19 +48,7 @@ function ProductDetail() {
         }
       );
     })();
-    // Query Default Data
-    (function () {
-      if (product) {
-        setValue('selling_unit', product.selling_unit);
-        setValue('unit_expire', product.expire_unit);
-        setValue('expire_time', product.expire_time);
-        setValue('images', product.images);
-        setValue('price', product.price);
-        setValue('gtin_code', product.gtin_code);
-        setValue('intro_video', product.intro_video);
-      }
-    })();
-  }, [product, setValue]);
+  }, [product]);
 
   const onSubmit = handleSubmit((data) => console.log(data));
 
@@ -111,8 +109,14 @@ function ProductDetail() {
                 </div>
                 <div className="flex-[40%]">
                   <TextField title="Tên sản phẩm" required disable value={product?.name} />
-                  <TextField title="Giống cà phê" required disable value={product?.cf_type} />
-                  <FormSelect control={control} name="selling_unit" title="Đơn vị bán" required options={[]} />
+                  <TextField title="Giống cà phê" required disable value={product?.product_type} />
+                  <FormSelect
+                    control={control}
+                    name="selling_unit"
+                    title="Đơn vị bán"
+                    required
+                    options={selling_unit}
+                  />
                 </div>
               </FormRow>
               <FormRow>
@@ -127,7 +131,7 @@ function ProductDetail() {
                   title="Thời hạn sử dụng"
                   placeholder="Thời hạn sử dụng"
                 />
-                <FormSelect control={control} name="unit_expire" title="Đơn vị" options={[]} />
+                <FormSelect control={control} name="unit_expire" title="Đơn vị" options={expiry_unit} />
               </FormRow>
               <FormInput control={control} name="intro_video" title="Video giới thiệu" placeholder="Video giới thiệu" />
               <FormRow>
@@ -158,7 +162,7 @@ function ProductDetail() {
               </FormRow>
               <div className="py-5">
                 <p className="mb-2 text-sm font-semibold font-body text-icon">Mô tả sản phẩm</p>
-                <QuillEditor value={product?.description || ''} onChange={(value) => setValue('description', value)} />
+                <QuillEditor control={control} name="description" />
               </div>
             </form>
           </Fragment>

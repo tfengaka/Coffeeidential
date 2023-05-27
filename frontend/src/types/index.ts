@@ -2,10 +2,12 @@
 export interface Product {
   id: string;
   name: string;
-  cf_type: string;
+  product_type: string;
   gtin_code: string;
   images: string[];
-  in_production: boolean;
+  certificated?: string[];
+  box_images?: string[];
+  isProduction: boolean;
   price: number;
   selling_unit: string;
   description: string;
@@ -72,6 +74,7 @@ export interface AuthUser {
 
 // Constant Type
 export interface Unit {
+  _id: string;
   value: string;
 }
 

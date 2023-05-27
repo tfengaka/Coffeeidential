@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import AuthApi from '~/api/AuthApi';
+import { AuthApi } from '~/api';
 
 import router from '~/constants/routers';
 import { useAppDispatch } from '~/redux';
