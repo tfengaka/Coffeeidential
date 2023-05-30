@@ -28,7 +28,7 @@ function DiariesTable({ diaries, openModal }: DiariesTableProps) {
         </thead>
         <tbody className="block overflow-y-auto h-[510px] scroll-bar">
           {diaries
-            .sort((a, b) => moment(b.create_at).unix() - moment(a.create_at).unix())
+            .sort((a, b) => moment(b.createdAt).unix() - moment(a.createdAt).unix())
             .map((item, index) => (
               <tr
                 key={index}
@@ -43,8 +43,8 @@ function DiariesTable({ diaries, openModal }: DiariesTableProps) {
                     <p className="text-xs truncate text-icon2">{`TxHash:${item.tx_hash}`}</p>
                   </div>
                 </td>
-                <td className="w-1/6 px-5 py-3 text-left">{item.create_by}</td>
-                <td className="w-2/12 px-5 py-3">{moment(item.create_at).format('DD/MM/yyyy - HH:MM A')}</td>
+                <td className="w-1/6 px-5 py-3 text-left">{item.createdBy}</td>
+                <td className="w-2/12 px-5 py-3">{moment(item.createdAt).format('DD/MM/yyyy - HH:MM A')}</td>
                 <td className="w-[11%] px-5 py-3">
                   <Button
                     className="bg-[rgba(84,184,98)] bg-opacity-10 text-primary px-2 py-1 flex items-center gap-x-1 !rounded-lg hover:opacity-80 transition-opacity ease-in-out target"

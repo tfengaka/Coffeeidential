@@ -12,51 +12,63 @@ const ProductSchema = new Schema<ProductModel>(
     name: {
       type: String,
       required: true,
+      trim: true,
       unique: true,
     },
-    gtin_code: {
-      type: String,
-      unique: true,
-    },
-    intro_video: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
-    isProduction: {
-      type: Boolean,
-      default: true,
+    product_type: {
+      type: Schema.Types.ObjectId,
+      ref: 'product_types',
+      required: true,
     },
     price: {
       type: Number,
       required: true,
     },
-    selling_unit: {
-      type: Schema.Types.ObjectId,
-      ref: 'units',
-      required: true,
+    images: {
+      type: [String],
+    },
+    box_images: {
+      type: [String],
+    },
+    certificated: {
+      type: [String],
+    },
+    description: {
+      type: String,
+    },
+    intro_video: {
+      type: String,
+    },
+    is_production: {
+      type: Boolean,
+      default: true,
     },
     expired_time: {
       type: Number,
     },
+    gtin_code: {
+      type: String,
+    },
+    selling_unit: {
+      type: Schema.Types.ObjectId,
+      ref: 'units',
+    },
     expired_unit: {
       type: Schema.Types.ObjectId,
       ref: 'units',
-      required: true,
-    },
-    product_type: {
-      type: Schema.Types.ObjectId,
-      ref: 'product_types',
     },
     producer: {
       type: Schema.Types.ObjectId,
       ref: 'users',
       required: true,
     },
-    updatedBy: {
-      type: Schema.Types.ObjectId,
-      ref: 'users',
+    token_id: {
+      type: String,
+      unique: true,
+    },
+    tx_hash: {
+      type: String,
+      required: true,
     },
   },
   schemaOptions

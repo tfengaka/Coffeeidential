@@ -33,7 +33,7 @@ function TextField({
 
       {disable ? (
         <div
-          className={`text-sm flex-1 w-full px-4 py-[10px] font-semibold rounded-md bg-[#eeeff8] min-h-[40px] text-icon ${className}`}
+          className={`text-sm flex-1 w-full px-4 py-[10px] font-semibold rounded-md bg-[#eeeff8] min-h-[40px] text-icon2 ${className}`}
         >
           <p>{value}</p>
         </div>

@@ -1,11 +1,13 @@
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { ProductApi } from '~/api';
 import Icons from '~/assets/icons';
 import images from '~/assets/images';
 import { Button, Card, Tag } from '~/components';
 import router from '~/constants/routers';
 import { useAppDispatch } from '~/redux';
-import { setProduct } from '~/redux/reducers/productSlice';
+import { setProduct, updateStatus } from '~/redux/reducers/productSlice';
 import { Product } from '~/types';
 
 interface ProductTableProps {
@@ -16,6 +18,19 @@ interface ProductTableProps {
 
 function ProductTable({ title, height, data }: ProductTableProps) {
   const dispatch = useAppDispatch();
+
+  const handleUpdateStatus = async (id: string, status: boolean) => {
+    try {
+      const res = await ProductApi.updateProductStatus(id, status);
+      if (res.id) {
+        dispatch(updateStatus({ id: res.id, status }));
+        toast.success('Cập nhật trạng thái thành công');
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Có lỗi xảy ra, vui lòng thử lại sau');
+    }
+  };
 
   return (
     <Card className="p-2 mt-5 ">
@@ -54,17 +69,17 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                   <img src={item.images[0] || images.logo} alt="product" className="w-10 h-10" />
                   <div className="ml-2">
                     <p className="font-body text-icon">{item.name}</p>
-                    <p className="text-icon2">{`Mã: ${item.id}`}</p>
+                    <p className="text-icon2">{`Mã: ${item.order_id}`}</p>
                   </div>
                 </td>
                 <td className="w-[15%] px-5 py-2">{item.gtin_code ? item.gtin_code : 'Chưa có'}</td>
                 <td className="w-[10%] px-5 py-2">
                   <Tag
-                    text={item.isProduction ? 'Đang sản xuất' : 'Ngưng sản xuất'}
-                    type={`${item.isProduction ? 'success' : 'danger'}`}
+                    text={item.is_production ? 'Đang sản xuất' : 'Ngưng sản xuất'}
+                    type={`${item.is_production ? 'success' : 'danger'}`}
                   />
                 </td>
-                <td className="w-2/12 px-5 py-2">{moment(item.create_at).format('DD/MM/yyyy - hh:mm A')}</td>
+                <td className="w-2/12 px-5 py-2">{moment(item.createdAt).format('DD/MM/yyyy - hh:mm A')}</td>
                 <td className="flex items-center w-[20%] gap-x-2 px-5 py-2	">
                   <Link
                     className="px-2 py-1 bg-[rgba(84,184,98,.15)] rounded-md text-primary flex items-center text-xs gap-x-2 hover:opacity-80 min-w-[115px]"
@@ -74,13 +89,19 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                     <Icons.Edit />
                     Chỉnh sửa
                   </Link>
-                  {item.isProduction ? (
-                    <Button className="flex items-center px-2 py-[2px] text-xs bg-opacity-25 bg-danger text-danger gap-x-2 hover:opacity-80 !rounded-md min-w-[115px]">
+                  {item.is_production ? (
+                    <Button
+                      className="flex items-center px-2 py-[2px] text-xs bg-opacity-25 bg-danger text-danger gap-x-2 hover:opacity-80 !rounded-md min-w-[115px]"
+                      onClick={() => handleUpdateStatus(item.id, false)}
+                    >
                       <Icons.Close />
                       Vô hiệu hóa
                     </Button>
                   ) : (
-                    <Button className="px-2 py-[2px] bg-[rgba(17,197,219,.15)] text-info text-xs flex items-center gap-x-2 hover:opacity-80 !rounded-md min-w-[115px]">
+                    <Button
+                      className="px-2 py-[2px] bg-[rgba(17,197,219,.15)] text-info text-xs flex items-center gap-x-2 hover:opacity-80 !rounded-md min-w-[115px]"
+                      onClick={() => handleUpdateStatus(item.id, true)}
+                    >
                       <Icons.Close />
                       Kích hoạt
                     </Button>

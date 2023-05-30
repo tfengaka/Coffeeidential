@@ -5,19 +5,28 @@ import Button from './Button';
 
 interface IUploader {
   className?: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  onRemove?: () => void;
 }
 
-function Uploader({ className }: IUploader) {
+function Uploader({ value, className, onChange, onRemove }: IUploader) {
   const id = useId();
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(value || '');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       convertFileToBase64(file).then((url) => {
         setImage(url);
+        if (onChange) onChange(url);
       });
     }
+  };
+
+  const handleRemoveImage = () => {
+    setImage('');
+    if (onRemove) onRemove();
   };
 
   return (
@@ -26,7 +35,7 @@ function Uploader({ className }: IUploader) {
         <Fragment>
           <Button
             className="absolute -top-3 -right-3 text-white !rounded-full bg-danger hover:bg-red-700 z-50"
-            onClick={() => setImage('')}
+            onClick={handleRemoveImage}
           >
             <Icons.Close />
           </Button>

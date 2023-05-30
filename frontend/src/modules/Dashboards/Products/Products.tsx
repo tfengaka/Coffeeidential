@@ -1,19 +1,29 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
+import { ProductApi } from '~/api';
 import Icons from '~/assets/icons';
 import router from '~/constants/routers';
 import { useAppDispatch, useAppSelector } from '~/redux';
-import ProductTable from './ProductTable';
-import { useEffect } from 'react';
 import { setProducts } from '~/redux/reducers/productSlice';
-import { productsdata } from '~/api/mockData';
+import ProductTable from './ProductTable';
 
 function Products() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.product.products);
 
   useEffect(() => {
-    dispatch(setProducts(productsdata));
+    (async () => {
+      try {
+        const res = await ProductApi.getMyProducts();
+        if (res) {
+          dispatch(setProducts(res.products));
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('Tải dữ liệu sản phẩm không thành công!');
+      }
+    })();
   }, [dispatch]);
 
   return (

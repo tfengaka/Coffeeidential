@@ -1,22 +1,23 @@
 // Data Model Type
 export interface Product {
   id: string;
+  order_id: string;
   name: string;
   product_type: string;
   gtin_code: string;
   images: string[];
   certificated?: string[];
   box_images?: string[];
-  isProduction: boolean;
+  is_production: boolean;
   price: number;
   selling_unit: string;
   description: string;
   expire_time: number;
-  expire_unit: string;
+  expiry_unit: string;
   intro_video: string;
   scan_count: number;
-  create_at: string;
-  create_by: string;
+  createdAt: string;
+  createdBy: string;
 }
 
 export interface Diary {
@@ -25,8 +26,8 @@ export interface Diary {
   description: string;
   images: string[];
   tx_hash: string;
-  create_at: string;
-  create_by: string;
+  createdAt: string;
+  createdBy: string;
 }
 
 // Authentication Type

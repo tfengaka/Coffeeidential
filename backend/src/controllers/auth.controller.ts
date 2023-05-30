@@ -1,12 +1,11 @@
-import { Request, Response } from 'express';
-import { HTTP_STATUS } from '~/utils';
-
 import bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import env from '~/config/env';
+import { web3 } from '~/contract';
 import { User } from '~/models';
-import { formatOrderNumber } from '~/utils';
-import { UserData, UserModel } from '~/type';
+import { UserData } from '~/type';
+import { HTTP_STATUS, formatOrderNumber } from '~/utils';
 
 interface SuccessResponse {
   user: UserData;
@@ -37,8 +36,10 @@ const AuthController = {
         return;
       }
 
-      // generate token
-      const token = await jwt.sign({ id: user.id }, env.JWT_SECRET_KEY);
+      const token = await jwt.sign({ id: user.id }, env.JWT_SECRET_KEY, {
+        expiresIn: '10h',
+      });
+
       const { password: _, ...result } = user.toObject();
       res.status(HTTP_STATUS.OK).json({
         user: result,
@@ -56,34 +57,36 @@ const AuthController = {
       res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
     }
     try {
-      // check if email is already in use
       const isAlready = await User.findOne({ email }).exec();
       if (isAlready) {
         res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Email đã được sử dụng!' });
         return;
       }
 
-      // * Create Blockchain Wallet Address
-      // const address = await web3.eth.personal.newAccount(password);
-      // if (!address) {
-      //   res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Create wallet failed!' });
-      // }
-
-      const accountCount = await User.countDocuments();
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
+      // * Create Blockchain Wallet Address
+      const address = await web3.eth.personal.newAccount(hashedPassword);
+      if (!address) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Create wallet failed!' });
+      }
+      //* Deposit 6M to new wallet
+      const tx = await web3.eth.sendTransaction({
+        from: env.DEFAULT_ADDRESS,
+        to: address,
+        value: 6000000, //* default gas limit
+      });
+      console.info('Transaction: ', tx.transactionHash);
+
+      //* Save to database
+      const accountCount = await User.countDocuments();
       const newAccount = await new User({
         order_id: formatOrderNumber('MA', accountCount + 1),
         email,
         password: hashedPassword,
         full_name,
-        avatar: '',
-        banner: '',
-        description: '',
-        phone: '',
-        website: '',
-        wallet: '0x2ba93c2496ce43eeb92b9f3f6c0f968e0dbc266d',
+        wallet: address,
       });
       await newAccount.save();
 

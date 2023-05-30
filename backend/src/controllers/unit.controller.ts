@@ -17,6 +17,20 @@ const UnitController = {
       console.error(error);
     }
   },
+  getUnitById: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      const unit = await Unit.findById({ _id: id });
+      res.status(HTTP_STATUS.OK).json({
+        _id: unit?._id,
+        value: unit?.value,
+      });
+    } catch (error) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
+      console.error(error);
+    }
+  },
+
   createUnit: async (req: Request, res: Response) => {
     const { type, value, userID } = req.body;
     try {

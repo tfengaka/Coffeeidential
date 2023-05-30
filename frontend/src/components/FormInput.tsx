@@ -33,12 +33,15 @@ function FormInput({
   });
   return (
     <div className="flex flex-col w-full mb-5 gap-y-1">
-      {title && (
-        <label htmlFor={name} className="text-sm font-bold text-icon">
-          {title}
-          {required && <strong className="text-error"> *</strong>}
-        </label>
-      )}
+      <div className="flex items-center justify-between">
+        {title && (
+          <label htmlFor={name} className="text-sm font-bold text-icon">
+            {title}
+            {required && <strong className="text-error"> *</strong>}
+          </label>
+        )}
+        {error && !field.value && <p className="text-sm font-semibold pointer-events-none text-error">{error}</p>}
+      </div>
       <div className="flex items-center">
         {icon && (
           <div className="text-icon px-4 py-2 bg-gray-100 border border-r-0 border-[#d1d2d] rounded-s-md">{icon}</div>
@@ -46,7 +49,7 @@ function FormInput({
         <input
           type={type}
           id={name}
-          className={`flex-1 w-full px-4 py-[10px] border outline-none transition-all placeholder:font-medium focus:border-primary20 disabled:bg-[#eeeff8] disabled:border-transparent text-sm font-semibold ${
+          className={`flex-1 w-full px-4 py-[10px] border outline-none transition-all placeholder:font-medium disabled:bg-[#eeeff8] disabled:border-transparent text-sm font-semibold ${
             icon ? 'rounded-e-md' : 'rounded-md'
           } ${
             error
@@ -57,7 +60,6 @@ function FormInput({
           {...field}
         />
       </div>
-      {error && !field.value && <p className="text-sm font-medium pointer-events-none text-error">{error}</p>}
     </div>
   );
 }

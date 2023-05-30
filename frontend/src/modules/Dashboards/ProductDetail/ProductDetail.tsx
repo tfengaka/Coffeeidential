@@ -2,12 +2,10 @@ import QRCode from 'qrcode';
 import { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-
 import Icons from '~/assets/icons';
 import { Button, Card, FormInput, FormRow, FormSelect, Loading, QuillEditor, TextField, Uploader } from '~/components';
 import router from '~/constants/routers';
 import { useFetchUnit } from '~/hooks';
-
 import { useAppSelector } from '~/redux';
 import { downloadImage } from '~/utils';
 
@@ -15,18 +13,19 @@ function ProductDetail() {
   const product = useAppSelector((state) => state.product.product);
   const { control, handleSubmit } = useForm({
     defaultValues: {
+      product_type: product?.product_type,
       selling_unit: product?.selling_unit,
-      unit_expire: product?.expire_unit,
+      unit_expire: product?.expiry_unit,
       expire_time: product?.expire_time,
-      images: product?.images,
       price: product?.price,
       gtin_code: product?.gtin_code,
       intro_video: product?.intro_video,
       description: product?.description || '',
     },
   });
-  const { loading, selling_unit, expiry_unit } = useFetchUnit();
+  const { loading, selling_unit, expiry_unit, product_types } = useFetchUnit();
   const [qrData, setQRData] = useState('');
+  const [images, setImages] = useState<string[]>(product?.images || []);
 
   useEffect(() => {
     // initial QR Code
@@ -80,7 +79,7 @@ function ProductDetail() {
                     <div className="flex flex-col gap-y-5">
                       <div>
                         <span className="font-medium text-icon">Mã sản phẩm: </span>
-                        <span className="font-semibold text-primary">{product?.id}</span>
+                        <span className="font-semibold text-primary">{product?.order_id}</span>
                       </div>
                       <Button
                         className="flex items-center justify-center gap-3 px-6 py-3 font-normal text-center duration-[350ms] bg-opacity-[0.15] bg-primary text-primary hover:scale-105 hover:bg-opacity-100 hover:text-white !text-[16px]"
@@ -109,7 +108,15 @@ function ProductDetail() {
                 </div>
                 <div className="flex-[40%]">
                   <TextField title="Tên sản phẩm" required disable value={product?.name} />
-                  <TextField title="Giống cà phê" required disable value={product?.product_type} />
+                  {/* <TextField title="Giống cà phê" required disable value={product?.productType_name} /> */}
+                  <FormSelect
+                    control={control}
+                    name="product_type"
+                    title="Giống cà phê"
+                    disabled
+                    required
+                    options={product_types}
+                  />
                   <FormSelect
                     control={control}
                     name="selling_unit"
@@ -138,7 +145,7 @@ function ProductDetail() {
                 <div className="flex-[33.3333333%]">
                   <p className="mb-2 text-sm font-semibold font-body text-icon">Hình ảnh sản phẩm (Tối đa 3 hình)</p>
                   <div className="flex items-center gap-x-4">
-                    <Uploader className="w-32 rounded-md h-28" />
+                    <Uploader className="w-32 rounded-md h-28" value={images[0]} />
                     <Uploader className="w-32 rounded-md h-28" />
                     <Uploader className="w-32 rounded-md h-28" />
                   </div>

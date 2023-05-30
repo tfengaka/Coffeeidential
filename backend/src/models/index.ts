@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Web3 from 'web3';
 import env from '~/config/env';
 
 mongoose.set('strictQuery', false);
@@ -11,8 +10,6 @@ export const connectMongoDB = async () =>
     connectTimeoutMS: 5000,
   });
 
-export const web3 = new Web3(new Web3.providers.HttpProvider(env.BLOCKCHAIN_RPC));
-
 export const schemaOptions = {
   toJSON: {
     virtuals: true,
@@ -23,6 +20,7 @@ export const schemaOptions = {
   timestamps: true,
 };
 
-export { default as User } from './User';
-export { default as Unit } from './Unit';
 export { default as ProductType } from './ProductType';
+export { default as Unit } from './Unit';
+export { default as User } from './User';
+export { default as Product } from './Product';

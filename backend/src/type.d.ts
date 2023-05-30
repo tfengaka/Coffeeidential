@@ -20,13 +20,14 @@ export type UserModel = UserData & {
 
 export interface ProductModel {
   order_id: string;
+  token_id: string;
   name: string;
   price: number;
   description: string;
   images: string[];
   box_images: string[];
   certificated: string[];
-  isProduction: boolean;
+  is_production: boolean;
   expired_time: number;
   gtin_code: string;
   intro_video: string;
@@ -35,6 +36,7 @@ export interface ProductModel {
   product_type: ObjectId;
   producer: ObjectId;
   updatedBy: ObjectId;
+  tx_hash: string;
 }
 
 export interface DiaryModel {
