@@ -16,7 +16,7 @@ export const overviewLinks = [
   {
     title: 'Thông tin doanh nghiệp',
     icon: images.profile,
-    link: router.dashboard.profile,
+    link: router.dashboard.profile.branding,
   },
 ];
 

@@ -7,7 +7,7 @@ import { Button, Card, FormInput, FormRow, FormSelect, Loading, QuillEditor, Tex
 import router from '~/constants/routers';
 import { useFetchUnit } from '~/hooks';
 import { useAppSelector } from '~/redux';
-import { downloadImage } from '~/utils';
+import { downloadImage, onImagesChange, onImagesRemove } from '~/utils';
 
 function ProductDetail() {
   const product = useAppSelector((state) => state.product.product);
@@ -90,7 +90,7 @@ function ProductDetail() {
                       </Button>
                       <Link
                         className="flex items-center justify-center gap-3 px-6 py-3 font-normal text-center duration-[350ms] bg-opacity-[0.15] bg-primary text-primary hover:scale-105 hover:bg-opacity-100 hover:text-white"
-                        to={`${router.home.lookup}/${product?.id}`}
+                        to={`${router.home.lookup}/${product?.order_id}`}
                         target="_blank"
                       >
                         <Icons.Search />
@@ -101,14 +101,14 @@ function ProductDetail() {
                         to={router.dashboard.products.diary.root}
                       >
                         <Icons.Book />
-                        Ghi nhật ký
+                        Nhật ký SX
                       </Link>
                     </div>
                   </FormRow>
                 </div>
                 <div className="flex-[40%]">
                   <TextField title="Tên sản phẩm" required disable value={product?.name} />
-                  {/* <TextField title="Giống cà phê" required disable value={product?.productType_name} /> */}
+
                   <FormSelect
                     control={control}
                     name="product_type"
@@ -145,9 +145,24 @@ function ProductDetail() {
                 <div className="flex-[33.3333333%]">
                   <p className="mb-2 text-sm font-semibold font-body text-icon">Hình ảnh sản phẩm (Tối đa 3 hình)</p>
                   <div className="flex items-center gap-x-4">
-                    <Uploader className="w-32 rounded-md h-28" value={images[0]} />
-                    <Uploader className="w-32 rounded-md h-28" />
-                    <Uploader className="w-32 rounded-md h-28" />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={images[0]}
+                      onChange={(url) => onImagesChange(images, 0, url, setImages)}
+                      onRemove={() => onImagesRemove(images, 0, setImages)}
+                    />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={images[1]}
+                      onChange={(url) => onImagesChange(images, 0, url, setImages)}
+                      onRemove={() => onImagesRemove(images, 0, setImages)}
+                    />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={images[2]}
+                      onChange={(url) => onImagesChange(images, 0, url, setImages)}
+                      onRemove={() => onImagesRemove(images, 0, setImages)}
+                    />
                   </div>
                 </div>
                 <div className="flex-[33.3333333%]">

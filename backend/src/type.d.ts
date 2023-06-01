@@ -40,11 +40,13 @@ export interface ProductModel {
 }
 
 export interface DiaryModel {
+  action_id: ObjectId;
   action_name: string;
   descriptions: string;
   images: string[];
   tx_hash: string;
   product: ObjectId;
+  createdBy: ObjectId;
 }
 
 export interface UnitModel {

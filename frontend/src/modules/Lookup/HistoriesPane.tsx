@@ -1,6 +1,6 @@
-import { IContentPanelProps } from '~/types';
 import DiaryProcess from './components/DiaryProcess';
-function HistoriesPane({ isActive }: IContentPanelProps) {
+
+function HistoriesPane({ isActive }: { isActive: boolean }) {
   return (
     <div className={`${isActive ? 'block' : 'hidden'} font-landing`}>
       <div className="p-2 border-b border-slate-100">

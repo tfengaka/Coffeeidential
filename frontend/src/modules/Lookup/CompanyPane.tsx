@@ -1,8 +1,7 @@
 import { Markup } from 'interweave';
 import Icons from '~/assets/icons';
-import { IContentPanelProps } from '~/types';
 
-function CompanyPane({ isActive }: IContentPanelProps) {
+function CompanyPane({ isActive }: { isActive: boolean }) {
   return (
     <div className={`${isActive ? 'block' : 'hidden'}`}>
       <div className="p-2 border-b border-slate-100">

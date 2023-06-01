@@ -28,8 +28,11 @@ const productSlice = createSlice({
         state.products[index].is_production = status;
       }
     },
+    addProduct: (state, action) => {
+      state.products.push(action.payload);
+    },
   },
 });
 
-export const { setProducts, setProduct, updateStatus } = productSlice.actions;
+export const { setProducts, setProduct, updateStatus, addProduct } = productSlice.actions;
 export default productSlice.reducer;

@@ -1,7 +1,6 @@
 import { Markup } from 'interweave';
-import { IContentPanelProps } from '~/types';
 
-function ProductDescription({ isActive }: IContentPanelProps) {
+function ProductDescription({ isActive }: { isActive: boolean }) {
   return (
     <div className={`${isActive ? 'block' : 'hidden'}`}>
       <div className="p-2 border-b border-slate-100">

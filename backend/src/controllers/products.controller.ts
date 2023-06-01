@@ -9,7 +9,7 @@ const ProductController = {
     try {
       const productType = new ProductType({ name, createdBy: userID });
       await productType.save();
-      res.status(HTTP_STATUS.CREATED).json({ message: 'OK' });
+      res.status(HTTP_STATUS.CREATED).json(productType);
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
       console.error(error);
@@ -54,25 +54,28 @@ const ProductController = {
       if (!owner?.wallet) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Bad Request!' });
       }
-      web3.eth.personal.unlockAccount(owner?.wallet, owner?.password, 600);
-      const type = await ProductType.findById(productsdata.product_type).exec();
-      const productCount = await Product.countDocuments();
-      const tx = await contract?.methods
-        .createNewProduct(formatOrderNumber('PM', productCount + 1), productsdata.name, type?.name)
-        .send({
-          from: owner?.wallet,
-          gas: 2000000,
+      const isUnlocked = await web3.eth.personal.unlockAccount(owner?.wallet, owner?.password, 3600);
+      if (isUnlocked) {
+        const type = await ProductType.findById(productsdata.product_type).exec();
+        const productCount = await Product.countDocuments();
+        const tx = await contract?.methods
+          .createNewProduct(formatOrderNumber('PM', productCount + 1), productsdata.name, type?.name)
+          .send({
+            from: owner?.wallet,
+            gas: 2000000,
+          });
+        console.info('Created Product TX: ', tx.transactionHash);
+        const product = new Product({
+          ...productsdata,
+          order_id: formatOrderNumber('PM', productCount + 1),
+          producer: userID,
+          token_id: tx.events.createdProduct.returnValues.tokenID,
+          tx_hash: tx.transactionHash,
         });
-      console.info('Trasaction Hash: ', tx.transactionHash);
-      const product = new Product({
-        ...productsdata,
-        order_id: formatOrderNumber('PM', productCount + 1),
-        producer: userID,
-        token_id: tx.events.createdProduct.returnValues.tokenID,
-        tx_hash: tx.transactionHash,
-      });
-      await product.save();
-      res.status(HTTP_STATUS.CREATED).json({ tx_hash: tx.transactionHash, product });
+        await product.save();
+        return res.status(HTTP_STATUS.CREATED).json(product);
+      }
+      return res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Cant Unlock Account!' });
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
       console.error(error);

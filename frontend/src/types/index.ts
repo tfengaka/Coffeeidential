@@ -15,17 +15,18 @@ export interface Product {
   expire_time: number;
   expiry_unit: string;
   intro_video: string;
-  scan_count: number;
   createdAt: string;
   createdBy: string;
 }
 
 export interface Diary {
   id: string;
+  action_id: string;
   action_name: string;
-  description: string;
+  descriptions: string;
   images: string[];
   tx_hash: string;
+  product: string;
   createdAt: string;
   createdBy: string;
 }

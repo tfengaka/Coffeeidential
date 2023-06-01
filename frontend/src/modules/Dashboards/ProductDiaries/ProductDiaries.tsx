@@ -1,18 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
+import { DiaryApi } from '~/api';
 import Icons from '~/assets/icons';
 import { Card, FormRow, TextField } from '~/components';
 import router from '~/constants/routers';
-import { useAppSelector } from '~/redux';
+import { useAppDispatch, useAppSelector } from '~/redux';
+import { setDiaries } from '~/redux/reducers/diarySlice';
 import DiariesTable from './components/DiariesTable';
 import DiaryModal from './components/DiaryModal';
 
-import { diariesData } from '~/api/mockData';
-
 function ProductDiaries() {
+  const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.product.product);
+  const diaries = useAppSelector((state) => state.diary.diaries);
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!product?.id) return;
+        const res = await DiaryApi.getDiariesByProductId(product?.id);
+        dispatch(setDiaries(res.diaries));
+      } catch (error) {
+        toast.error('Lỗi lấy dữ liệu nhật ký sản xuất');
+        console.error(error);
+      }
+    })();
+  }, [dispatch, product?.id]);
 
   return (
     <Card className="w-full px-6 py-5 mt-5 rounded-md font-body">
@@ -35,7 +50,7 @@ function ProductDiaries() {
         </div>
         <TextField title="Sản phẩm" value="Cà phê Arabica nguyên chất có bơ" disable required />
       </FormRow>
-      <DiariesTable diaries={diariesData} openModal={() => setOpenModal(true)} />
+      <DiariesTable diaries={diaries} openModal={() => setOpenModal(true)} />
       {openModal && <DiaryModal product={product} onClose={() => setOpenModal(false)} />}
     </Card>
   );

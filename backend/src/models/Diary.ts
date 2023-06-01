@@ -4,6 +4,11 @@ import { DiaryModel } from '~/type';
 
 const DiarySchema = new Schema<DiaryModel>(
   {
+    action_id: {
+      type: Schema.Types.ObjectId,
+      ref: 'units',
+      required: true,
+    },
     action_name: {
       type: String,
       required: true,
@@ -22,6 +27,11 @@ const DiarySchema = new Schema<DiaryModel>(
     product: {
       type: Schema.Types.ObjectId,
       ref: 'products',
+      required: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
       required: true,
     },
   },

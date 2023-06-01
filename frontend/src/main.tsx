@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <PersistGate loading={null} persistor={persistor}>
       <RouterProvider router={router} />
       <ToastContainer
-        position="bottom-left"
+        position="bottom-right"
         autoClose={3000}
         hideProgressBar
         newestOnTop={false}

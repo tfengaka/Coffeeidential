@@ -1,7 +1,6 @@
 import images from '~/assets/images';
-import { IContentPanelProps } from '~/types';
 
-function DistributionPane({ isActive }: IContentPanelProps) {
+function DistributionPane({ isActive }: { isActive: boolean }) {
   return (
     <div className={`${isActive ? 'block' : 'hidden'}`}>
       <div className="p-2 border-b border-slate-100">

@@ -1,17 +1,13 @@
 import moment from 'moment';
 import { Card, Tag } from '~/components';
+import ProductImages from './components/ProductImages';
+import ProductCertificates from './components/ProductCertificates';
 
 function ProductInfo() {
   return (
-    <Card className="flex flex-col py-4 rounded-md md:flex-row">
-      <div className="w-full basis-1/2">
-        <div className="w-full h-full overflow-hidden max-h-[460px]">
-          <img
-            src="https://thenobcoffee.com/wp-content/uploads/2021/08/Ca-phe-Arabica-4.png"
-            alt=""
-            className="object-fill w-full h-full"
-          />
-        </div>
+    <Card className="flex flex-col gap-1 py-4 rounded-md md:flex-row">
+      <div className="max-w-full basis-1/2">
+        <ProductImages />
       </div>
       <div className="flex flex-col w-full px-2 pr-5 basis-1/2 gap-y-4 md:px-4">
         <div>
@@ -32,18 +28,11 @@ function ProductInfo() {
             <p className="text-icon">{moment(Date.now()).format('DD/MM/yyyy')}</p>
           </div>
         </div>
-        <div>
-          <h5 className="mb-2 text-sm font-semibold text-icon2">Giấy chứng nhận</h5>
-          <div className="flex items-center gap-x-2">
-            <div className="relative transition-all duration-500 cursor-pointer basis-1/3 hover:shadow-card">
-              <img
-                src="https://dummyimage.com/206x371.png/cc0000/ffffff"
-                alt=""
-                className="object-contain w-full h-full rounded-md"
-              />
-            </div>
-          </div>
-        </div>
+        <ProductCertificates
+          certificates={[
+            'https://images.agridential.vn/api/v1/files/images/1631524961351-agdfs-278548e786730dfad5f2bb53c11602a7.jpg',
+          ]}
+        />
       </div>
     </Card>
   );

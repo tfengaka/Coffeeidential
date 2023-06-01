@@ -36,7 +36,7 @@ const UnitController = {
     try {
       const unit = new Unit({ type, value, createdBy: userID });
       await unit.save();
-      res.status(HTTP_STATUS.CREATED).json({ message: 'OK' });
+      res.status(HTTP_STATUS.CREATED).json(unit);
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
       console.error(error);

@@ -41,9 +41,10 @@ const getNodeWallets = async (req: Request, res: Response) => {
     res.status(500).json({ errors: err });
   }
 };
+export { getNodeWallets, getNodeStatus };
 
 export { default as AuthController } from './auth.controller';
 export { default as ProductController } from './products.controller';
 export { default as UnitController } from './unit.controller';
 export { default as UserController } from './users.controller';
-export { getNodeWallets, getNodeStatus };
+export { default as DiaryController } from './diaries.controller';

@@ -11,6 +11,4 @@ router.put('/', verifyToken, ProductController.updateProductStatus);
 router.post('/types', verifyToken, ProductController.createProductType);
 router.get('/types', ProductController.getProductTypes);
 
-router.get('/types/:id', ProductController.getProductTypeById);
-
 export default router;

@@ -14,7 +14,6 @@ interface DiaryModalProps {
 function DiaryModal({ product, onClose }: DiaryModalProps) {
   const diary = useAppSelector((state) => state.diary.diary);
   const [isLoading, setLoading] = useState(true);
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (diary) setLoading(false);
@@ -49,25 +48,25 @@ function DiaryModal({ product, onClose }: DiaryModalProps) {
                 <span className="font-bold text-icon">Sản phẩm: </span>
                 <span className="my-1 font-bold text-icon2">{product?.name}</span>
                 <p className="font-bold text-icon">
-                  Mã sản phẩm: <span className="text-icon2">{product?.id}</span>
+                  Mã sản phẩm: <span className="text-icon2">{product?.order_id}</span>
                 </p>
               </div>
               <FormRow>
                 <div className="w-full mt-1">
                   <span className="font-bold text-icon">Ghi nhận bởi: </span>
-                  <span className="font-bold text-icon2">{diary?.create_by}</span>
+                  <span className="font-bold text-icon2">{diary?.createdBy}</span>
                 </div>
                 <div className="w-full mt-1">
                   <span className="font-bold text-icon">Thời gian: </span>
                   <span className="text-sm font-semibold text-icon2">
-                    {moment(diary?.create_at).format('DD/MM/yyyy - HH:MM A')}
+                    {moment(diary?.createdAt).format('DD/MM/yyyy - HH:MM A')}
                   </span>
                 </div>
               </FormRow>
               <div className="mt-1">
                 <h5 className="font-bold text-icon">Mô tả chi tiết</h5>
                 <div className="p-2 font-body rounded-sm bg-slate-200 text-icon w-full min-h-[150px]">
-                  <Markup content={diary?.description} />
+                  <Markup content={diary?.descriptions} className="font-landing text-[95%]" />
                 </div>
               </div>
               <div className="mt-1">

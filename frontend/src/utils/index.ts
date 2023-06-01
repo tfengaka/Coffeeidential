@@ -21,3 +21,19 @@ export const convertFileToBase64 = (file: File): Promise<string> => {
     };
   });
 };
+
+export const onImagesChange = (
+  targetValue: string[],
+  index: number,
+  url: string,
+  callback: (value: string[]) => void
+) => {
+  const cloneImages = [...targetValue];
+  cloneImages[index] = url;
+  callback(cloneImages);
+};
+export const onImagesRemove = (targetValue: string[], index: number, callback: (value: string[]) => void) => {
+  const cloneImages = [...targetValue];
+  cloneImages[index] = '';
+  callback(cloneImages);
+};
