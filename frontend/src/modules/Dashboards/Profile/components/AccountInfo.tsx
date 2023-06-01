@@ -1,22 +1,40 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { UserApi } from '~/api';
 import { Button, FormInput, QuillEditor } from '~/components';
-import { AuthUser, IContentPanelProps } from '~/types';
+import router from '~/constants/routers';
+import { useAppDispatch, useAppSelector } from '~/redux';
+import { setMe } from '~/redux/reducers/authSlice';
 
-interface IAccountInfoProps extends IContentPanelProps {
-  user?: AuthUser;
-}
-
-function AccountInfo({ isActive, user }: IAccountInfoProps) {
-  const { control } = useForm({
+function AccountInfo() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.auth.user);
+  const { control, handleSubmit } = useForm({
     defaultValues: {
-      full_name: user?.full_name,
-      description: user?.description,
+      full_name: user?.full_name || '',
+      description: user?.description || '',
     },
   });
 
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const res = await UserApi.updateAccountInfo(data);
+      if (res) {
+        dispatch(setMe(res));
+        navigate(router.dashboard.profile.branding);
+        toast.success('Đã cập nhật thông tin!');
+      }
+    } catch (error) {
+      toast.error('Lỗi!');
+      console.error(error);
+    }
+  });
+
   return (
-    <div className={`${isActive ? 'block' : 'hidden'}`}>
-      <form>
+    <div>
+      <form onSubmit={onSubmit}>
         <div className="flex items-center justify-between mb-4">
           <div>
             <h5 className="text-[20px] font-semibold text-icon mb-1">Thông tin tài khoản</h5>

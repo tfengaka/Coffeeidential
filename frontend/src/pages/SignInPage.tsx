@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Icons from '~/assets/icons';
 import images from '~/assets/images';
-import { Button, Checkbox, FormInput } from '~/components';
+import { Backdrop, Button, Checkbox, FormInput, Loading } from '~/components';
 import router from '~/constants/routers';
 import { useAuth } from '~/hooks';
 import { SignInForm } from '~/types';
 
 function SignInPage() {
-  const { handleSignIn } = useAuth();
+  const { loading, handleSignIn } = useAuth();
   const {
     control,
     formState: { errors },
@@ -85,6 +85,13 @@ function SignInPage() {
           </div>
         </div>
       </div>
+      {loading && (
+        <Backdrop>
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <Loading />
+          </div>
+        </Backdrop>
+      )}
     </div>
   );
 }

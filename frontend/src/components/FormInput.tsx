@@ -40,7 +40,7 @@ function FormInput({
             {required && <strong className="text-error"> *</strong>}
           </label>
         )}
-        {error && !field.value && <p className="text-sm font-semibold pointer-events-none text-error">{error}</p>}
+        {(error || !field.value) && <p className="text-xs font-semibold pointer-events-none text-error">{error}</p>}
       </div>
       <div className="flex items-center">
         {icon && (

@@ -18,7 +18,13 @@ const router = {
         create: '/dashboard/products/diaries/create',
       },
     },
-    profile: '/dashboard/profile',
+    profile: {
+      root: '/dashboard/profile',
+      branding: '/dashboard/profile/branding',
+      contact: '/dashboard/profile/contact',
+      account: '/dashboard/profile/account',
+      changepassword: '/dashboard/profile/changepassword',
+    },
   },
 };
 

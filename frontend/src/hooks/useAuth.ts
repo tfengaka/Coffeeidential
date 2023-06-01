@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthApi } from '~/api';
-
 import router from '~/constants/routers';
 import { useAppDispatch } from '~/redux';
-import { signIn, signOut, setMe } from '~/redux/reducers/authSlice';
+import { setMe, signIn, signOut } from '~/redux/reducers/authSlice';
 import { SignInForm, SignUpInput } from '~/types';
 
 export default function useAuth() {
@@ -53,7 +52,7 @@ export default function useAuth() {
     } catch (error) {
       console.error(error);
       setIsError(true);
-      toast.error('Đăng ký thất bại!\nVui lòng thử lại!');
+      toast.error('Có lỗi xảy ra! Vui lòng thử lại!');
     } finally {
       setLoading(false);
     }

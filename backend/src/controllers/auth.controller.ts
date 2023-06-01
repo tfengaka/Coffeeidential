@@ -72,12 +72,15 @@ const AuthController = {
         res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Create wallet failed!' });
       }
       //* Deposit 6M to new wallet
-      const tx = await web3.eth.sendTransaction({
-        from: env.DEFAULT_ADDRESS,
-        to: address,
-        value: 6000000, //* default gas limit
-      });
-      console.info('Transaction: ', tx.transactionHash);
+      const rootAccount = web3.eth.defaultAccount;
+      if (rootAccount) {
+        const tx = await web3.eth.sendTransaction({
+          from: rootAccount,
+          to: address,
+          value: 6000000, //* default gas limit
+        });
+        console.info('Deposit TX: ', tx.transactionHash);
+      }
 
       //* Save to database
       const accountCount = await User.countDocuments();

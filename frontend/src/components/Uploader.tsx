@@ -33,12 +33,15 @@ function Uploader({ value, className, onChange, onRemove }: IUploader) {
     <div className={`relative flex items-center justify-center border-dashed border-2 border-[#4191ff] ${className}`}>
       {image ? (
         <Fragment>
-          <Button
-            className="absolute -top-3 -right-3 text-white !rounded-full bg-danger hover:bg-red-700 z-50"
-            onClick={handleRemoveImage}
-          >
-            <Icons.Close />
-          </Button>
+          {onRemove && (
+            <Button
+              className="absolute -top-3 -right-3 text-white !rounded-full bg-danger hover:bg-red-700 z-50"
+              onClick={handleRemoveImage}
+            >
+              <Icons.Close />
+            </Button>
+          )}
+
           <img
             src={image}
             alt="avatar"

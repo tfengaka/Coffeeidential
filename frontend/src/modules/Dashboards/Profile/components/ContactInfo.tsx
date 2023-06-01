@@ -1,18 +1,40 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { UserApi } from '~/api';
 import { Button, FormInput, TextField } from '~/components';
-import { useAppSelector } from '~/redux';
-import { AuthUser, IContentPanelProps } from '~/types';
+import router from '~/constants/routers';
+import { useAppDispatch, useAppSelector } from '~/redux';
+import { setMe } from '~/redux/reducers/authSlice';
 
-interface IContactInfoProps extends IContentPanelProps {
-  user?: AuthUser;
-}
-
-function ContactInfo({ isActive }: IContactInfoProps) {
-  const { control } = useForm();
+function ContactInfo() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      website: user?.website || '',
+      address: user?.address || '',
+      phone: user?.phone || '',
+    },
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const res = await UserApi.updateContactInfo(data);
+      if (res) {
+        dispatch(setMe(res));
+        navigate(router.dashboard.profile.branding);
+        toast.success('Đã cập nhật thông tin!');
+      }
+    } catch (error) {
+      toast.error('Lỗi!');
+      console.error(error);
+    }
+  });
   return (
-    <div className={`${isActive ? 'block' : 'hidden'}`}>
-      <form>
+    <div>
+      <form onSubmit={onSubmit}>
         <div className="flex items-center justify-between mb-4">
           <div>
             <h5 className="text-[20px] font-semibold text-icon mb-1">Thông tin liên lạc</h5>
@@ -28,7 +50,7 @@ function ContactInfo({ isActive }: IContactInfoProps) {
         <TextField title="Email đăng nhập tài khoản" required disable value={user?.email} />
         <FormInput control={control} name="website" title="Địa chỉ website" />
         <FormInput control={control} name="address" title="Địa chỉ" />
-        <FormInput control={control} name="phone_number" title="Số điện thoại" />
+        <FormInput control={control} name="phone" title="Số điện thoại" />
       </form>
     </div>
   );

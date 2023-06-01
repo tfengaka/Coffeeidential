@@ -24,3 +24,5 @@ export { default as ProductType } from './ProductType';
 export { default as Unit } from './Unit';
 export { default as User } from './User';
 export { default as Product } from './Product';
+export { default as Lookup } from './Lookup';
+export { default as Diary } from './Diary';

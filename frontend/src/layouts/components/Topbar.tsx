@@ -36,7 +36,7 @@ function Topbar() {
             </div>
             <div className="relative p-0">
               <div className="rounded-xl overflow-hidden w-[44px] h-[44px] ">
-                <img src={images.logo} alt="" className="" />
+                <img src={user?.avatar || images.logo} alt="" className="object-cover" />
               </div>
             </div>
           </Button>
@@ -49,7 +49,7 @@ function Topbar() {
               Xin chào, <span className="text-base font-bold text-primary">{user?.full_name}</span>
             </h6>
             <Link
-              to={router.dashboard.profile}
+              to={router.dashboard.profile.root}
               className="flex items-center px-3 py-2 font-medium transition-colors rounded-sm gap-x-4 text-icon hover:text-primary hover:bg-slate-200 hover:bg-opacity-50"
               onClick={() => setOpenMenu(false)}
             >

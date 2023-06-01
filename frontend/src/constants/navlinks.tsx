@@ -33,7 +33,7 @@ export const sideBarLinks = [
   },
   {
     name: 'Doanh nghiệp',
-    path: router.dashboard.profile,
+    path: router.dashboard.profile.root,
     icon: <Icons.Company />,
   },
 ];
@@ -42,18 +42,22 @@ export const profilePanelLinks = [
   {
     title: 'Thông tin doanh nghiệp',
     icon: <Icons.Infomation />,
+    link: router.dashboard.profile.account,
   },
   {
     title: 'Thông tin liên lạc',
     icon: <Icons.Identification />,
+    link: router.dashboard.profile.contact,
   },
   {
     title: 'Thương hiệu',
     icon: <Icons.Brand />,
+    link: router.dashboard.profile.branding,
   },
   {
     title: 'Đổi mật khẩu',
     icon: <Icons.ReLock />,
+    link: router.dashboard.profile.changepassword,
   },
 ];
 

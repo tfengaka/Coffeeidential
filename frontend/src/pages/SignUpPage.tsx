@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Icons from '~/assets/icons';
 import images from '~/assets/images';
-import { Button, Checkbox, FormInput } from '~/components';
+import { Backdrop, Button, Checkbox, FormInput, Loading } from '~/components';
 import router from '~/constants/routers';
 import { useAuth } from '~/hooks';
 import { SignUpForm } from '~/types';
 
 function SignUpPage() {
-  const { handleSignUp } = useAuth();
+  const { loading, handleSignUp } = useAuth();
   const [showPass, setShowPass] = useState(false);
   const {
     control,
@@ -21,7 +21,7 @@ function SignUpPage() {
     resolver: yupResolver(
       Yup.object({
         email: Yup.string().email('Email không hợp lệ').required('Thông tin bắt buộc'),
-        fullName: Yup.string().required('Thông tin bắt buộc'),
+        full_name: Yup.string().required('Thông tin bắt buộc'),
         password: Yup.string().required('Thông tin bắt buộc').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
         repassword: Yup.string()
           .required('Thông tin bắt buộc')
@@ -31,9 +31,9 @@ function SignUpPage() {
     mode: 'onSubmit',
   });
 
-  const onSubmit = handleSubmit((data) => {
-    handleSignUp({ email: data.email, fullName: data.fullName, password: data.password });
-  });
+  const onSubmit = handleSubmit((data) =>
+    handleSignUp({ email: data.email, full_name: data.full_name, password: data.password })
+  );
 
   return (
     <div className="flex items-center">
@@ -58,12 +58,12 @@ function SignUpPage() {
               <FormInput
                 control={control}
                 title="Tên doanh nghiệp"
-                name="fullName"
+                name="full_name"
                 placeholder="Tên doanh nghiệp"
                 required
                 type="text"
                 icon={<Icons.Company />}
-                error={errors.fullName?.message}
+                error={errors.full_name?.message}
               />
               <div className="flex items-center justify-between gap-x-4">
                 <FormInput
@@ -113,6 +113,13 @@ function SignUpPage() {
           </div>
         </div>
       </div>
+      {loading && (
+        <Backdrop>
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <Loading />
+          </div>
+        </Backdrop>
+      )}
     </div>
   );
 }

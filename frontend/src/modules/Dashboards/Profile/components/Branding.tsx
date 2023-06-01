@@ -1,18 +1,42 @@
 import { Fragment, useState } from 'react';
+import { toast } from 'react-toastify';
+import { UserApi } from '~/api';
 import Icons from '~/assets/icons';
 import images from '~/assets/images';
 import { Button, Uploader } from '~/components';
-import { AuthUser, IContentPanelProps } from '~/types';
+import { useAppDispatch, useAppSelector } from '~/redux';
+import { setMe } from '~/redux/reducers/authSlice';
 
-interface IBrandingProps extends IContentPanelProps {
-  user?: AuthUser;
-}
+function Branding() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
 
-function Branding({ isActive, user }: IBrandingProps) {
   const [isEdit, setIsEdit] = useState(false);
+  const [avatar, setAvatar] = useState('');
+  const [banner, setBanner] = useState('');
+
+  const onReset = () => {
+    setIsEdit(false);
+    setAvatar('');
+    setBanner('');
+  };
+
+  const handleComfirm = async () => {
+    try {
+      const res = await UserApi.updateBranding({ avatar, banner });
+      if (res) {
+        dispatch(setMe(res));
+        setIsEdit(false);
+        toast.success('Đã cập nhật thông tin!');
+      }
+    } catch (error) {
+      toast.error('Lỗi!');
+      console.error(error);
+    }
+  };
 
   return (
-    <div className={`${isActive ? 'block' : 'hidden'}`}>
+    <div>
       <div className="mb-4">
         <h5 className="text-[20px] font-semibold text-icon mb-1">Thương hiệu</h5>
         <p className="font-light text-slate-400">Thiết lập logo và banner</p>
@@ -23,11 +47,14 @@ function Branding({ isActive, user }: IBrandingProps) {
             <Fragment>
               <Button
                 className="flex items-center px-4 py-2 text-white shadow-dangers bg-danger gap-x-2 hover:shadow-danger_hover hover:-translate-y-[2px]"
-                onClick={() => setIsEdit(false)}
+                onClick={onReset}
               >
                 Hủy bỏ
               </Button>
-              <Button className="flex items-center px-4 py-2 text-white shadow-success bg-primary gap-x-2 hover:shadow-success_hover  hover:-translate-y-[2px]">
+              <Button
+                className="flex items-center px-4 py-2 text-white shadow-success bg-primary gap-x-2 hover:shadow-success_hover  hover:-translate-y-[2px]"
+                onClick={handleComfirm}
+              >
                 Lưu lại
               </Button>
             </Fragment>
@@ -43,7 +70,7 @@ function Branding({ isActive, user }: IBrandingProps) {
         </div>
         <div className="relative w-full h-full">
           {isEdit ? (
-            <Uploader className="w-full h-full rounded-lg" />
+            <Uploader className="w-full h-full rounded-lg" value={banner} onChange={(url) => setBanner(url)} />
           ) : (
             <img
               src={user?.banner || images.default_banner}
@@ -54,11 +81,11 @@ function Branding({ isActive, user }: IBrandingProps) {
         </div>
       </div>
       <div>
-        <div className="relative flex items-center justify-center p-2 bg-white rounded-full w-36 h-36 -top-16 left-4 shadow-card">
+        <div className="relative flex items-center justify-center bg-white rounded-full w-36 h-36 -top-16 left-4 shadow-card">
           {isEdit ? (
-            <Uploader className="w-full h-full rounded-full" />
+            <Uploader className="w-full h-full rounded-full" value={avatar} onChange={(url) => setAvatar(url)} />
           ) : (
-            <img src={user?.avatar || images.logo} alt="" className="object-cover w-full h-full" />
+            <img src={user?.avatar || images.logo} alt="avatar" className="object-cover w-full h-full p-1" />
           )}
         </div>
       </div>
