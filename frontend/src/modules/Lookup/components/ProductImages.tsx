@@ -1,12 +1,10 @@
 import { useState } from 'react';
 
-const images = [
-  'https://thenobcoffee.com/wp-content/uploads/2021/08/Ca-phe-Arabica-4.png',
-  'https://thenobcoffee.com/wp-content/uploads/2021/08/Ca-phe-Arabica-4.png',
-  'https://thenobcoffee.com/wp-content/uploads/2021/08/Ca-phe-Arabica-4.png',
-];
+interface ImagesProps {
+  images: string[];
+}
 
-function ProductImages() {
+function ProductImages({ images }: ImagesProps) {
   const [activeImage, setActiveImage] = useState(0);
   return (
     <div className="relative w-full h-full">

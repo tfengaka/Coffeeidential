@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Unit } from '~/types';
+import { CoffeeTypesApi } from '~/api';
 import UnitApi from '~/api/UnitApi';
-import { ProductApi } from '~/api';
+import { Unit } from '~/types';
 
 function useFetchUnit() {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ function useFetchUnit() {
         const selling_unit = await UnitApi.getUnitsByType('selling');
         const expiry_unit = await UnitApi.getUnitsByType('expiry');
         const actionNames = await UnitApi.getUnitsByType('action');
-        const productTypes = await ProductApi.getProductTypes();
+        const productTypes = await CoffeeTypesApi.getCoffeeTypes();
         setProductTypes(productTypes.data);
         setSellingUnit(selling_unit.data);
         setExpiryUnit(expiry_unit.data);

@@ -4,46 +4,6 @@ import { ProductType, User, Product } from '~/models';
 import contract, { web3 } from '~/contract';
 
 const ProductController = {
-  createProductType: async (req: Request, res: Response) => {
-    const { name, userID } = req.body;
-    try {
-      const productType = new ProductType({ name, createdBy: userID });
-      await productType.save();
-      res.status(HTTP_STATUS.CREATED).json(productType);
-    } catch (error) {
-      res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
-      console.error(error);
-    }
-  },
-  getProductTypes: async (req: Request, res: Response) => {
-    try {
-      const productTypes = await ProductType.find();
-      const result = productTypes.map((productType) => ({
-        _id: productType._id,
-        value: productType.name,
-      }));
-      res.status(HTTP_STATUS.OK).json({ data: result });
-    } catch (error) {
-      res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
-      console.error(error);
-    }
-  },
-  getProductTypeById: async (req: Request, res: Response) => {
-    const { id } = req.params;
-    try {
-      const productType = await ProductType.findById({ _id: id }).exec();
-      if (!productType) {
-        res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found!' });
-      }
-      res.status(HTTP_STATUS.OK).json({
-        _id: productType?.id,
-        value: productType?.name,
-      });
-    } catch (error) {
-      res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
-      console.error(error);
-    }
-  },
   createProduct: async (req: Request, res: Response) => {
     const { userID, ...productsdata } = req.body;
     if (!productsdata) {
@@ -95,6 +55,22 @@ const ProductController = {
     try {
       const { id, is_production } = req.body;
       const product = await Product.findByIdAndUpdate(id, { $set: { is_production } }, { new: true });
+      if (!product) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found!' });
+      }
+      res.status(HTTP_STATUS.OK).json(product);
+    } catch (error) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
+    }
+  },
+  updateProductData: async (req: Request, res: Response) => {
+    const { userID, ...data } = req.body;
+    const { id } = req.params;
+    if (!data || !id) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
+    }
+    try {
+      const product = await Product.findByIdAndUpdate(id, { $set: { ...data } }, { new: true });
       if (!product) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found!' });
       }

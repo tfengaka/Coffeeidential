@@ -16,7 +16,6 @@ export interface Product {
   expiry_unit: string;
   intro_video: string;
   createdAt: string;
-  createdBy: string;
 }
 
 export interface Diary {
@@ -60,6 +59,11 @@ export interface SignUpInput extends SignInForm {
 }
 export interface SignUpForm extends SignUpInput {
   repassword?: string;
+}
+
+export interface LookUpProductData extends Product {
+  producer: AuthUser;
+  diaries: Diary[];
 }
 
 export interface ChangePasswordForm {

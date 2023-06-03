@@ -48,3 +48,5 @@ export { default as ProductController } from './products.controller';
 export { default as UnitController } from './unit.controller';
 export { default as UserController } from './users.controller';
 export { default as DiaryController } from './diaries.controller';
+export { default as LookUpController } from './lookup.controller';
+export { default as CoffeeTypeController } from './coffeeTypes.controller';

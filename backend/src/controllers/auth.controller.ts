@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import env from '~/config/env';
@@ -30,7 +30,7 @@ const AuthController = {
         return;
       }
 
-      const isMatched = await bcrypt.compare(password, user.password);
+      const isMatched = await compare(password, user.password);
       if (!isMatched) {
         res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Password is invalid!' });
         return;
@@ -63,8 +63,8 @@ const AuthController = {
         return;
       }
 
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const salt = await genSalt(10);
+      const hashedPassword = await hash(password, salt);
 
       // * Create Blockchain Wallet Address
       const address = await web3.eth.personal.newAccount(hashedPassword);

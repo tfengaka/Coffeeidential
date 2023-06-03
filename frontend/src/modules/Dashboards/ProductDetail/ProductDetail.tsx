@@ -1,7 +1,9 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import QRCode from 'qrcode';
 import { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
 import Icons from '~/assets/icons';
 import { Button, Card, FormInput, FormRow, FormSelect, Loading, QuillEditor, TextField, Uploader } from '~/components';
 import router from '~/constants/routers';
@@ -10,8 +12,14 @@ import { useAppSelector } from '~/redux';
 import { downloadImage, onImagesChange, onImagesRemove } from '~/utils';
 
 function ProductDetail() {
+  const { loading, selling_unit, expiry_unit, product_types } = useFetchUnit();
+  const [qrData, setQRData] = useState('');
   const product = useAppSelector((state) => state.product.product);
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       product_type: product?.product_type,
       selling_unit: product?.selling_unit,
@@ -22,15 +30,22 @@ function ProductDetail() {
       intro_video: product?.intro_video,
       description: product?.description || '',
     },
+    resolver: yupResolver(
+      Yup.object({
+        price: Yup.number().required('Thông tin bắt buộc').min(5000, 'Giá không hợp lệ'),
+      })
+    ),
+    mode: 'onSubmit',
   });
-  const { loading, selling_unit, expiry_unit, product_types } = useFetchUnit();
-  const [qrData, setQRData] = useState('');
+
   const [images, setImages] = useState<string[]>(product?.images || []);
+  const [box_images, setBoxImages] = useState<string[]>(product?.box_images || []);
+  const [certificated, setCertificated] = useState<string[]>(product?.certificated || []);
 
   useEffect(() => {
     // initial QR Code
     (function () {
-      const QRValue = `${window.location.protocol}//${window.location.host}/lookup/${product?.id}`;
+      const QRValue = `${window.location.protocol}//${window.location.host}/lookup/${product?.order_id}`;
       QRCode.toDataURL(
         QRValue,
         {
@@ -54,22 +69,25 @@ function ProductDetail() {
   return (
     <div className="w-full">
       <Card className="px-10 py-5">
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <h3 className="mb-2 text-xl font-semibold text-icon">Mô tả sản phẩm</h3>
-            <p className="text-icon2 text-md">Thông tin cơ bản giới thiệu sản phẩm</p>
+        <form onSubmit={onSubmit}>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="mb-2 text-xl font-semibold text-icon">Mô tả sản phẩm</h3>
+              <p className="text-icon2 text-md">Thông tin cơ bản giới thiệu sản phẩm</p>
+            </div>
+            <Button
+              className="px-5 py-2 text-white transition-all shadow-success bg-primary hover:shadow-success_hover hover:-translate-y-[2px]"
+              type="submit"
+            >
+              Lưu lại
+            </Button>
           </div>
-          <Button className="px-5 py-2 text-white transition-all shadow-success bg-primary hover:shadow-success_hover hover:-translate-y-[2px]">
-            Lưu lại
-          </Button>
-        </div>
-        {loading ? (
-          <div className="flex items-center justify-center w-full h-full ">
-            <Loading />
-          </div>
-        ) : (
-          <Fragment>
-            <form onSubmit={onSubmit}>
+          {loading ? (
+            <div className="flex items-center justify-center w-full h-full ">
+              <Loading />
+            </div>
+          ) : (
+            <Fragment>
               <FormRow>
                 <div className="flex-[40%]">
                   <FormRow className="!gap-x-5">
@@ -127,7 +145,14 @@ function ProductDetail() {
                 </div>
               </FormRow>
               <FormRow>
-                <FormInput control={control} name="price" type="number" title="Giá bán khuyến nghị (VNĐ)" required />
+                <FormInput
+                  control={control}
+                  name="price"
+                  type="number"
+                  title="Giá bán khuyến nghị (VNĐ)"
+                  required
+                  error={errors.price?.message}
+                />
                 <FormInput control={control} name="gtin_code" title="Mã GTIN" placeholder="Mã GTIN" />
               </FormRow>
               <FormRow>
@@ -186,9 +211,9 @@ function ProductDetail() {
                 <p className="mb-2 text-sm font-semibold font-body text-icon">Mô tả sản phẩm</p>
                 <QuillEditor control={control} name="description" />
               </div>
-            </form>
-          </Fragment>
-        )}
+            </Fragment>
+          )}
+        </form>
       </Card>
     </div>
   );

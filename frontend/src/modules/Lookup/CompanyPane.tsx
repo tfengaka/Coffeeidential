@@ -1,16 +1,22 @@
 import { Markup } from 'interweave';
 import Icons from '~/assets/icons';
+import { AuthUser } from '~/types';
 
-function CompanyPane({ isActive }: { isActive: boolean }) {
+interface ICompanyPane {
+  isActive: boolean;
+  producer: AuthUser;
+}
+
+function CompanyPane({ isActive, producer }: ICompanyPane) {
   return (
     <div className={`${isActive ? 'block' : 'hidden'}`}>
       <div className="p-2 border-b border-slate-100">
         <p className="text-sm font-medium text-slate-400">Sản xuất bởi</p>
-        <h4 className="text-xl font-bold">{'Công ty TNHH Sản xuất Thương mại và Dịch vụ Phong Thúy'}</h4>
+        <h4 className="text-lg font-bold">{producer.full_name}</h4>
       </div>
       <div className="px-2 py-4 border-b border-slate-100">
         <h4 className="mb-2 text-xl font-bold">Mô tả</h4>
-        <Markup className="text-icon" content={'<p><strong>Lĩnh vực:</strong>&nbsp;Bán buôn thực phẩm</p>'} />
+        <Markup className="text-icon" content={producer.description} />
       </div>
       <div className="p-2 pb-4">
         <h4 className="mb-4 text-xl font-bold">Thông tin liên hệ</h4>
@@ -20,12 +26,14 @@ function CompanyPane({ isActive }: { isActive: boolean }) {
             <div className="p-3 text-white rounded-full bg-primary20">
               <Icons.Phone />
             </div>
-            <a
-              className="text-base font-bold underline transition-colors hover:text-primary text-icon"
-              href={`tel:${'0123456789'}`}
-            >
-              {'0123456789'}
-            </a>
+            {producer?.phone && (
+              <a
+                className="text-base font-bold underline transition-colors hover:text-primary text-icon"
+                href={`tel:${producer.phone}`}
+              >
+                {producer.phone}
+              </a>
+            )}
           </div>
           {/* Email */}
           <div className="flex items-center px-2 gap-x-6">
@@ -34,9 +42,9 @@ function CompanyPane({ isActive }: { isActive: boolean }) {
             </div>
             <a
               className="text-base font-bold underline transition-colors text-icon hover:text-primary"
-              href={`mailto:${'nthoa2.lhp.nh@gmail.com'}`}
+              href={`mailto:${producer?.email}`}
             >
-              {'nthoa2.lhp.nh@gmail.com'}
+              {producer?.email}
             </a>
           </div>
           {/* Website */}
@@ -46,11 +54,11 @@ function CompanyPane({ isActive }: { isActive: boolean }) {
             </div>
             <a
               className="text-base font-bold underline transition-colors hover:text-primary text-icon"
-              href={'https://www.google.com'}
+              href={producer?.website}
               target="_blank"
               rel="noreferrer"
             >
-              {'https://www.google.com'}
+              {producer?.website}
             </a>
           </div>
           {/* Address */}
@@ -58,9 +66,11 @@ function CompanyPane({ isActive }: { isActive: boolean }) {
             <div className="p-3 text-white rounded-full bg-primary20">
               <Icons.Location />
             </div>
-            <span className="text-base font-bold transition-colors hover:text-primary text-icon">
-              {'Số 450 Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh'}
-            </span>
+            {producer?.address && (
+              <span className="text-base font-bold transition-colors hover:text-primary text-icon">
+                {'Số 450 Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh'}
+              </span>
+            )}
           </div>
         </div>
       </div>
