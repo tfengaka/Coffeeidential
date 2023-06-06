@@ -27,6 +27,22 @@ const CoffeeTypeController = {
       console.error(error);
     }
   },
+  getTypeDataByID: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    if (!id) return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Missing ID!' });
+    try {
+      const productType = await ProductType.findById(id).exec();
+      if (!productType) return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found!' });
+      const result = {
+        _id: productType._id,
+        value: productType.name,
+      };
+      res.status(HTTP_STATUS.OK).json(result);
+    } catch (error) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
+      console.error(error);
+    }
+  },
 };
 
 export default CoffeeTypeController;

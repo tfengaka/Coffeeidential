@@ -53,10 +53,13 @@ const ProductController = {
   },
   updateProductStatus: async (req: Request, res: Response) => {
     try {
-      const { id, is_production } = req.body;
+      const { id, is_production, userID } = req.body;
       const product = await Product.findByIdAndUpdate(id, { $set: { is_production } }, { new: true });
       if (!product) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found!' });
+      }
+      if (product.producer !== userID) {
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Unauthorized!' });
       }
       res.status(HTTP_STATUS.OK).json(product);
     } catch (error) {
@@ -70,7 +73,7 @@ const ProductController = {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
     }
     try {
-      const product = await Product.findByIdAndUpdate(id, { $set: { ...data } }, { new: true });
+      const product = await Product.findOneAndUpdate({ order_id: id }, { $set: { ...data } }, { new: true });
       if (!product) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found!' });
       }

@@ -13,8 +13,8 @@ function ProductImages({ images }: ImagesProps) {
         {images.map((image, index) => (
           <div
             key={index}
-            className={`relative transition-all cursor-pointer rounded-md hover:shadow-card border-2 ${
-              index === activeImage ? 'border-primary' : 'border-icon2'
+            className={`relative transition-all cursor-pointer rounded-md border-2 ${
+              index === activeImage ? 'border-primary shadow-success' : 'border-icon2 hover:shadow-card'
             }`}
             onClick={() => setActiveImage(index)}
           >

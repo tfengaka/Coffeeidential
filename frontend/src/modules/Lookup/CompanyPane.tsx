@@ -11,12 +11,12 @@ function CompanyPane({ isActive, producer }: ICompanyPane) {
   return (
     <div className={`${isActive ? 'block' : 'hidden'}`}>
       <div className="p-2 border-b border-slate-100">
-        <p className="text-sm font-medium text-slate-400">Sản xuất bởi</p>
-        <h4 className="text-lg font-bold">{producer.full_name}</h4>
+        <p className="text-sm font-semibold text-slate-400">Sản xuất bởi</p>
+        <h4 className="text-lg font-bold text-icon">{producer.full_name}</h4>
       </div>
       <div className="px-2 py-4 border-b border-slate-100">
         <h4 className="mb-2 text-xl font-bold">Mô tả</h4>
-        <Markup className="text-icon" content={producer.description} />
+        <Markup className="font-semibold text-icon2 font-landing" content={producer.description} />
       </div>
       <div className="p-2 pb-4">
         <h4 className="mb-4 text-xl font-bold">Thông tin liên hệ</h4>

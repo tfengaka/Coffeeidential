@@ -1,4 +1,4 @@
-import { Product } from '~/types';
+import { Product, ProductInfo } from '~/types';
 import axiosClient from './AxiosClient';
 
 const ProductApi = {
@@ -6,6 +6,7 @@ const ProductApi = {
   createNewProduct: (product: Product): Promise<Product> => axiosClient.post('/products', product),
   updateProductStatus: (id: string, status: boolean): Promise<Product> =>
     axiosClient.put(`/products`, { id, is_production: status }),
+  updateProductInfo: (id: string, data: ProductInfo): Promise<Product> => axiosClient.put(`/products/${id}`, data),
 };
 
 export default ProductApi;

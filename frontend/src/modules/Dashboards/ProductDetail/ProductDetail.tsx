@@ -3,15 +3,19 @@ import QRCode from 'qrcode';
 import { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { ProductApi } from '~/api';
 import Icons from '~/assets/icons';
 import { Button, Card, FormInput, FormRow, FormSelect, Loading, QuillEditor, TextField, Uploader } from '~/components';
 import router from '~/constants/routers';
 import { useFetchUnit } from '~/hooks';
-import { useAppSelector } from '~/redux';
+import { useAppDispatch, useAppSelector } from '~/redux';
+import { updateProductInfo } from '~/redux/reducers/productSlice';
 import { downloadImage, onImagesChange, onImagesRemove } from '~/utils';
 
 function ProductDetail() {
+  const dispatch = useAppDispatch();
   const { loading, selling_unit, expiry_unit, product_types } = useFetchUnit();
   const [qrData, setQRData] = useState('');
   const product = useAppSelector((state) => state.product.product);
@@ -23,8 +27,8 @@ function ProductDetail() {
     defaultValues: {
       product_type: product?.product_type,
       selling_unit: product?.selling_unit,
-      unit_expire: product?.expiry_unit,
-      expire_time: product?.expire_time,
+      expired_unit: product?.expired_unit,
+      expired_time: product?.expired_time,
       price: product?.price,
       gtin_code: product?.gtin_code,
       intro_video: product?.intro_video,
@@ -64,7 +68,23 @@ function ProductDetail() {
     })();
   }, [product]);
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+    const reqData = {
+      ...data,
+      images,
+      box_images,
+      certificated,
+    };
+    if (product?.order_id) {
+      try {
+        const res = await ProductApi.updateProductInfo(product?.order_id, reqData);
+        dispatch(updateProductInfo({ product: res }));
+        toast.success('Cập nhật thông tin thành công!');
+      } catch (error) {
+        toast.error('Cập nhật thông tin không thành công!');
+      }
+    }
+  });
 
   return (
     <div className="w-full">
@@ -158,12 +178,12 @@ function ProductDetail() {
               <FormRow>
                 <FormInput
                   control={control}
-                  name="expire_time"
+                  name="expired_time"
                   type="number"
                   title="Thời hạn sử dụng"
                   placeholder="Thời hạn sử dụng"
                 />
-                <FormSelect control={control} name="unit_expire" title="Đơn vị" options={expiry_unit} />
+                <FormSelect control={control} name="expired_unit" title="Đơn vị" options={expiry_unit} />
               </FormRow>
               <FormInput control={control} name="intro_video" title="Video giới thiệu" placeholder="Video giới thiệu" />
               <FormRow>
@@ -193,17 +213,47 @@ function ProductDetail() {
                 <div className="flex-[33.3333333%]">
                   <p className="mb-2 text-sm font-semibold font-body text-icon">Hình ảnh chứng nhận (Tối đa 3 hình)</p>
                   <div className="flex items-center gap-x-4">
-                    <Uploader className="w-32 rounded-md h-28" />
-                    <Uploader className="w-32 rounded-md h-28" />
-                    <Uploader className="w-32 rounded-md h-28" />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={certificated[0]}
+                      onChange={(url) => onImagesChange(certificated, 0, url, setCertificated)}
+                      onRemove={() => onImagesRemove(certificated, 0, setCertificated)}
+                    />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={certificated[1]}
+                      onChange={(url) => onImagesChange(certificated, 0, url, setCertificated)}
+                      onRemove={() => onImagesRemove(certificated, 0, setCertificated)}
+                    />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={certificated[2]}
+                      onChange={(url) => onImagesChange(certificated, 0, url, setCertificated)}
+                      onRemove={() => onImagesRemove(certificated, 0, setCertificated)}
+                    />
                   </div>
                 </div>
                 <div className="flex-[33.3333333%]">
                   <p className="mb-2 text-sm font-semibold font-body text-icon">Hình ảnh thùng (Tối đa 3 hình)</p>
                   <div className="flex items-center gap-x-4">
-                    <Uploader className="w-32 rounded-md h-28" />
-                    <Uploader className="w-32 rounded-md h-28" />
-                    <Uploader className="w-32 rounded-md h-28" />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={box_images[0]}
+                      onChange={(url) => onImagesChange(box_images, 0, url, setBoxImages)}
+                      onRemove={() => onImagesRemove(box_images, 0, setBoxImages)}
+                    />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={box_images[1]}
+                      onChange={(url) => onImagesChange(box_images, 0, url, setBoxImages)}
+                      onRemove={() => onImagesRemove(box_images, 0, setBoxImages)}
+                    />
+                    <Uploader
+                      className="w-32 rounded-md h-28"
+                      value={box_images[2]}
+                      onChange={(url) => onImagesChange(box_images, 0, url, setBoxImages)}
+                      onRemove={() => onImagesRemove(box_images, 0, setBoxImages)}
+                    />
                   </div>
                 </div>
               </FormRow>

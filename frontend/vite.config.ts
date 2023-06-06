@@ -11,8 +11,6 @@ export default defineConfig({
     host: '0.0.0.0',
     hmr: {
       path: '/ws',
-      // port: 3000,
-      // clientPort: 443,
     },
   },
   css: {

@@ -5,11 +5,11 @@ import { LookupApi } from '~/api';
 import images from '~/assets/images';
 import { Card, Loading } from '~/components';
 import { CompanyPane, DescriptionPane, DistributionPane, HistoriesPane, NavPanel, ProductInfo } from '~/modules/Lookup';
-import { LookUpProductData } from '~/types';
+import { LookUpData } from '~/types';
 
 function ProductLookup() {
   const { id } = useParams();
-  const [productData, setProductData] = useState<LookUpProductData>();
+  const [productData, setProductData] = useState<LookUpData>();
   const [activePanel, setActivePanel] = useState(2);
   const [loading, setLoading] = useState(false);
 
@@ -61,7 +61,7 @@ function ProductLookup() {
               <HistoriesPane
                 isActive={activePanel === 2}
                 diaries={productData.diaries}
-                producerName={productData.producer.full_name}
+                producer={productData.producer.full_name}
               />
               <DistributionPane isActive={activePanel === 3} />
             </Card>

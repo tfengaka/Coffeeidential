@@ -1,9 +1,11 @@
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { chartData } from '~/api/mockData';
+import { ChartData } from '~/types';
+
 interface BarChartProps {
   width?: number | string;
   height?: number | string;
+  dataSet: ChartData[];
 }
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -20,13 +22,13 @@ const options = {
   },
 };
 
-function BarChart({ width, height }: BarChartProps) {
+function BarChart({ width, height, dataSet }: BarChartProps) {
   const data = {
-    labels: chartData.map((item) => item.label),
+    labels: dataSet.map((item) => item.date),
     datasets: [
       {
         label: 'Số lượt truy xuất',
-        data: chartData.map((item) => item.data),
+        data: dataSet.map((item) => item.count),
         backgroundColor: '#54b862',
       },
     ],

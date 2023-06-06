@@ -6,5 +6,6 @@ const router = Router();
 
 router.post('/', verifyToken, CoffeeTypeController.createNewType);
 router.get('/', CoffeeTypeController.getAllTypes);
+router.get('/:id', CoffeeTypeController.getTypeDataByID);
 
 export default router;

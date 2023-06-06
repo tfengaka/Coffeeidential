@@ -9,12 +9,12 @@ interface NavPanelProps {
 function NavPanel({ activePanel, setActivePanel }: NavPanelProps) {
   return (
     <div className="sticky top-0 py-4 mb-2 bg-[#f5f5f5] z-50">
-      <ul className="hidden w-full grid-cols-4 bg-white rounded-sm md:grid">
+      <ul className="hidden w-full grid-cols-4 bg-white rounded-sm lg:grid">
         {lookupPanelButtons.map((button, index) => (
           <li className="flex-grow" key={index}>
             <Button
               className={`w-full px-6 py-4 text-[14px] font-semibold rounded-sm ${
-                activePanel === index ? 'bg-primary text-white' : 'text-icon hover:text-primary'
+                activePanel === index ? 'bg-primary20 text-white shadow-success' : 'text-icon2 hover:text-primary20'
               }`}
               onClick={() => setActivePanel(index)}
             >
@@ -23,7 +23,7 @@ function NavPanel({ activePanel, setActivePanel }: NavPanelProps) {
           </li>
         ))}
       </ul>
-      <ul className="grid grid-cols-4 px-2 md:hidden gap-x-3 ">
+      <ul className="grid grid-cols-4 px-2 lg:hidden gap-x-3">
         {lookupPanelButtons.map((button, index) => (
           <li key={index}>
             <span className="flex flex-col items-center justify-center text-center transition-all duration-500">
