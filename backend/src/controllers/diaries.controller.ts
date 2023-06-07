@@ -1,8 +1,7 @@
-import { productsdata } from './../../../frontend/src/api/mockData';
 import { Request, Response } from 'express';
-import { HTTP_STATUS, formatOrderNumber } from '~/utils';
 import contract, { web3 } from '~/contract';
 import { Diary, Product, Unit, User } from '~/models';
+import { HTTP_STATUS } from '~/utils';
 
 const DiaryController = {
   createDiary: async (req: Request, res: Response) => {
@@ -12,11 +11,11 @@ const DiaryController = {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad request' });
     }
     try {
-      const owner = await User.findById({ _id: userID }).exec();
+      const owner = await User.findById(userID).exec();
       if (!owner?.wallet) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found Owner!' });
       }
-      const product = await Product.findById({ _id: product_id }).exec();
+      const product = await Product.findById(product_id).exec();
       if (product?.producer.toString() !== userID) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'You are not owner of this product!' });
       }

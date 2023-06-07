@@ -1,10 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-import { Button, Card, FormRow, FormSelect, QuillEditor, TextField, Uploader } from '~/components';
+import { DiaryApi } from '~/api';
+import { Backdrop, Button, Card, FormRow, FormSelect, Loading, QuillEditor, TextField, Uploader } from '~/components';
+import router from '~/constants/routers';
 import { useFetchUnit } from '~/hooks';
-import { useAppSelector } from '~/redux';
+import { useAppDispatch, useAppSelector } from '~/redux';
+import { createdDiary } from '~/redux/reducers/diarySlice';
 import { onImagesChange, onImagesRemove } from '~/utils';
 
 interface DiaryForm {
@@ -13,6 +18,8 @@ interface DiaryForm {
 }
 
 function DiaryCreator() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { actions } = useFetchUnit();
   const product = useAppSelector((state) => state.product.product);
   const {
@@ -22,21 +29,37 @@ function DiaryCreator() {
   } = useForm<DiaryForm>({
     resolver: yupResolver(
       Yup.object({
-        action: Yup.string().required('Thông tin bắt buộc'),
-        descriptions: Yup.string().required('Thông tin bắt buộc'),
+        action: Yup.string().required('Thông tin bắt buộc!'),
+        descriptions: Yup.string().required('Thông tin bắt buộc!'),
       })
     ),
     mode: 'onSubmit',
   });
 
+  const [loading, setLoading] = useState(false);
   const [images, setImages] = useState<string[]>([]);
 
   const onSubmit = handleSubmit(async (data) => {
-    const reqData = {
-      ...data,
-      images,
-    };
-    console.log(reqData);
+    if (images.length > 0) {
+      if (product?.id) {
+        setLoading(true);
+        const reqData = {
+          ...data,
+          images,
+        };
+        try {
+          const res = await DiaryApi.createDiary(product.id, reqData);
+          dispatch(createdDiary(res));
+          navigate(router.dashboard.products.diary.root);
+        } catch (error) {
+          toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+        } finally {
+          setLoading(false);
+        }
+      }
+    } else {
+      toast.warning('Cảnh báo: Nên có ảnh để chứng minh dữ liệu!');
+    }
   });
 
   return (
@@ -91,15 +114,22 @@ function DiaryCreator() {
               </div>
             </div>
           </FormRow>
-
-          <div>
-            <span className="block mb-2 text-sm font-semibold font-body text-icon">
-              Mô tả quy trình <strong className="text-error"> *</strong>
-            </span>
-            <QuillEditor control={control} name="descriptions" />
-          </div>
+          <QuillEditor
+            control={control}
+            name="descriptions"
+            required
+            title="Mô tả quy trình"
+            error={errors.descriptions?.message}
+          />
         </div>
       </form>
+      {loading && (
+        <Backdrop>
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <Loading />
+          </div>
+        </Backdrop>
+      )}
     </Card>
   );
 }

@@ -37,7 +37,7 @@ function FormInput({
         {title && (
           <label htmlFor={name} className="text-sm font-bold text-icon">
             {title}
-            {required && <strong className="text-error"> *</strong>}
+            {required && <strong className="text-error">*</strong>}
           </label>
         )}
         {(error || !field.value) && <p className="text-xs font-semibold pointer-events-none text-error">{error}</p>}

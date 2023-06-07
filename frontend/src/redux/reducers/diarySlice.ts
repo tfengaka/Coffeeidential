@@ -21,8 +21,11 @@ const diarySlice = createSlice({
     setDiary: (state, action) => {
       state.diary = action.payload;
     },
+    createdDiary: (state, { payload }) => {
+      state.diaries.push(payload);
+    },
   },
 });
 
-export const { setDiaries, setDiary } = diarySlice.actions;
+export const { setDiaries, setDiary, createdDiary } = diarySlice.actions;
 export default diarySlice.reducer;

@@ -40,7 +40,7 @@ function Overview() {
               <div className="text-center">
                 <span className="mb-1 text-2xl font-bold font-landing">Welcome!</span>
                 <p className="font-semibold text-md">
-                  Chào mừng <span className="font-bold">{user?.full_name}</span> đến với Coffeeidential
+                  Chào mừng <span className="font-bold underline">{user?.full_name}</span> đến với Coffeeidential
                 </p>
               </div>
             </div>
@@ -49,7 +49,6 @@ function Overview() {
             <div className="w-full h-full bg-bottom bg-no-repeat bg-cover rounded-md bg-hero_banner shadow-success"></div>
           </div>
         </div>
-
         {/* Button */}
         <div className="mt-5">
           <div className="relative w-full py-2">
@@ -72,12 +71,13 @@ function Overview() {
             </div>
           </div>
         </div>
+        {/* Overview Data */}
         <FormRow className="w-full mt-5 gap-x-4">
           <Card className="flex-auto w-full h-[400px] p-4">
             <div className="pb-4 font-semibold border-b font-body text-icon border-slate-100">
               <p>Tổng lượt truy xuất</p>
             </div>
-            {data?.scan_count && <BarChart width={1050} height={315} dataSet={data.scan_count} />}
+            {data?.scan_count.reverse() && <BarChart width={1050} height={315} dataSet={data.scan_count} />}
           </Card>
           <Card className="p-5 basis-1/3">
             <div className="pb-4 font-semibold border-b font-body text-icon border-slate-100">

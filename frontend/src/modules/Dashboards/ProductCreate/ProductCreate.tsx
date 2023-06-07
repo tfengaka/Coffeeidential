@@ -40,7 +40,7 @@ function ProductCreate() {
     mode: 'onSubmit',
     defaultValues: {
       price: 0,
-      expire_time: 0,
+      expired_time: 0,
       description: '',
     },
   });
@@ -126,10 +126,10 @@ function ProductCreate() {
                 />
                 <FormSelect
                   control={control}
-                  name="expiry_unit"
+                  name="expired_unit"
                   title="Đơn vị"
                   options={expiry_unit}
-                  error={errors.expiry_unit?.message}
+                  error={errors.expired_unit?.message}
                 />
               </FormRow>
             </FormRow>
@@ -197,8 +197,7 @@ function ProductCreate() {
               </div>
             </FormRow>
             <div className="py-5">
-              <p className="mb-2 text-sm font-semibold font-body text-icon">Mô tả sản phẩm</p>
-              <QuillEditor name="description" control={control} />
+              <QuillEditor name="description" control={control} title="Mô tả sản phẩm" />
             </div>
             <FormRow className="justify-between">
               <p className="text-icon2">

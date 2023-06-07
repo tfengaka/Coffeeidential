@@ -48,10 +48,7 @@ function AccountInfo() {
           </Button>
         </div>
         <FormInput control={control} name="full_name" title="Tên doanh nghiệp" required />
-        <div>
-          <p className="mb-2 text-sm font-semibold font-body text-icon">Giới thiệu doanh nghiệp</p>
-          <QuillEditor control={control} name="description" />
-        </div>
+        <QuillEditor control={control} name="description" title="Giới thiệu doanh nghiệp" />
       </form>
     </div>
   );

@@ -13,7 +13,7 @@ function ProductDescription({ isActive, content }: IProductDescription) {
         <h4 className="text-xl font-bold text-icon">Thông tin sản phẩm</h4>
       </div>
       <div className="w-full px-2 pb-4 mt-4">
-        <Markup content={content} />
+        <Markup content={content} className="text-icon" />
       </div>
     </div>
   );

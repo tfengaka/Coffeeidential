@@ -186,7 +186,7 @@ function ProductDetail() {
                 <FormSelect control={control} name="expired_unit" title="Đơn vị" options={expiry_unit} />
               </FormRow>
               <FormInput control={control} name="intro_video" title="Video giới thiệu" placeholder="Video giới thiệu" />
-              <FormRow>
+              <FormRow className="mb-5">
                 <div className="flex-[33.3333333%]">
                   <p className="mb-2 text-sm font-semibold font-body text-icon">Hình ảnh sản phẩm (Tối đa 3 hình)</p>
                   <div className="flex items-center gap-x-4">
@@ -257,10 +257,7 @@ function ProductDetail() {
                   </div>
                 </div>
               </FormRow>
-              <div className="py-5">
-                <p className="mb-2 text-sm font-semibold font-body text-icon">Mô tả sản phẩm</p>
-                <QuillEditor control={control} name="description" />
-              </div>
+              <QuillEditor control={control} name="description" title="Mô tả sản phẩm" />
             </Fragment>
           )}
         </form>
