@@ -27,6 +27,7 @@ export interface Diary {
   tx_hash: string;
   product: string;
   createdAt: string;
+  createdBy: string;
 }
 export interface AuthUser {
   _id: string;
@@ -73,9 +74,9 @@ export interface LookUpProducer {
 export interface LookUpProduct extends Product {
   producer: AuthUser;
 }
-export interface LookUpDiary extends Diary {
+export type LookUpDiary = Diary & {
   createdBy: LookUpProducer;
-}
+};
 export interface LookUpData extends LookUpProduct {
   diaries: LookUpDiary[];
 }

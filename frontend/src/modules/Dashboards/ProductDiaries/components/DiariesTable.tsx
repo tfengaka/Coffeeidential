@@ -19,30 +19,30 @@ function DiariesTable({ diaries, openModal }: DiariesTableProps) {
       <table className="w-full h-full overflow-y-auto">
         <thead className="w-full text-sm font-semibold border-b font-body text-icon border-slate-200">
           <tr className="flex items-center w-full text-left select-none">
-            <th className="w-10 py-3 pr-5">STT</th>
+            <th className="w-24"></th>
             <th className="flex-auto px-5 py-3">Hành động</th>
+            <th className="w-2/6 px-5 py-3 text-left">Mã Băm</th>
             <th className="w-1/6 px-5 py-3">Ghi nhận bởi</th>
             <th className="w-2/12 px-5 py-3">Thời gian</th>
             <th className="w-[11%] px-5 py-3 text-center"></th>
           </tr>
         </thead>
-        <tbody className="block overflow-y-auto h-[510px] scroll-bar">
-          {diaries
-            .sort((a, b) => moment(b.createdAt).unix() - moment(a.createdAt).unix())
-            .map((item, index) => (
+        <tbody className="block overflow-y-auto h-[450px] max-h-full scroll-bar">
+          {diaries.length > 0 &&
+            diaries.map((item, index) => (
               <tr
                 key={index}
                 className={`flex items-center transition-colors bg-opacity-70 hover:bg-slate-50 text-icon2 select-none text-sm font-semibold font-body w-full ${
                   index % 2 === 0 ? 'bg-slate-100' : 'bg-white'
                 }`}
               >
-                <td className="w-10 py-3 pr-5 text-center">{index + 1}</td>
-                <td className="flex-auto px-5 py-3">
-                  <div>
-                    <p className="font-bold font-body text-icon">{item.action_name}</p>
-                    <p className="text-xs truncate text-icon2">{`TxHash:${item.tx_hash}`}</p>
-                  </div>
+                <td className="w-24 py-3 pl-4">
+                  <img src={item.images[0]} alt="" className="object-cover w-24 h-12" />
                 </td>
+                <td className="flex-auto px-5 py-3">
+                  <p className="text-[15px] font-bold font-body text-icon">{item.action_name}</p>
+                </td>
+                <td className="flex-shrink-0 w-2/6 px-5 py-3 text-left truncate">{item.tx_hash}</td>
                 <td className="w-1/6 px-5 py-3 text-left">{item.createdBy}</td>
                 <td className="w-2/12 px-5 py-3">{moment(item.createdAt).format('DD/MM/yyyy - HH:MM A')}</td>
                 <td className="w-[11%] px-5 py-3">

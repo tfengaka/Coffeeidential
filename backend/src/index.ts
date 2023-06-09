@@ -9,10 +9,15 @@ import router from './routes';
 
 const initialServer = () => {
   const app = express();
-  app.use(morgan('[:method] - [:date[web]] - [:remote-addr] - :url - [:status] - :response-time ms'));
+  app.use(
+    cors({
+      origin: '*',
+      methods: 'GET,PUT,POST,DELETE',
+    })
+  );
   app.use(express.json({ limit: '25mb' }));
   app.use(cookieParser());
-  app.use(cors());
+  app.use(morgan('[:method] - [:date[web]] - [:remote-addr] - :url - [:status] - :response-time ms'));
 
   app.use('/api', router);
   app.listen(env.APP_PORT, env.APP_HOST, () => {

@@ -85,7 +85,11 @@ function Branding() {
           {isEdit ? (
             <Uploader className="w-full h-full rounded-full" value={avatar} onChange={(url) => setAvatar(url)} />
           ) : (
-            <img src={user?.avatar || images.logo} alt="avatar" className="object-cover w-full h-full p-1" />
+            <img
+              src={user?.avatar || images.logo}
+              alt="avatar"
+              className="object-cover w-full h-full p-1 rounded-full"
+            />
           )}
         </div>
       </div>

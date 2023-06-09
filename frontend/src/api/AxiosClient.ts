@@ -5,6 +5,7 @@ const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
   },
   paramsSerializer: (params) => queryString.stringify(params, { arrayFormat: 'bracket' }),
 });

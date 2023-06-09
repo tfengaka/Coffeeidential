@@ -44,32 +44,35 @@ function DiaryModal({ product, onClose }: DiaryModalProps) {
             </div>
             <div className="px-4 py-2 mt-1">
               <h3 className="mb-2 text-xl font-bold uppercase text-icon">{diary?.action_name}</h3>
-              <div className="mt-1">
-                <span className="font-bold text-icon">Sản phẩm: </span>
-                <span className="my-1 font-bold text-icon2">{product?.name}</span>
+              <div className="font-bold">
+                <span className="text-icon">Sản phẩm: </span>
+                <span className="text-icon2">{product?.name}</span>
                 <p className="font-bold text-icon">
                   Mã sản phẩm: <span className="text-icon2">{product?.order_id}</span>
                 </p>
               </div>
               <FormRow>
-                <div className="w-full mt-1">
+                <div className="w-full">
                   <span className="font-bold text-icon">Ghi nhận bởi: </span>
                   <span className="font-bold text-icon2">{diary?.createdBy}</span>
                 </div>
-                <div className="w-full mt-1">
+                <div className="w-full">
                   <span className="font-bold text-icon">Thời gian: </span>
-                  <span className="text-sm font-semibold text-icon2">
+                  <span className="text-sm font-bold text-icon2">
                     {moment(diary?.createdAt).format('DD/MM/yyyy - HH:MM A')}
                   </span>
                 </div>
               </FormRow>
-              <div className="mt-1">
+              <p className="font-bold text-icon">
+                Mã băm: <span className="text-sm text-icon2">{diary?.tx_hash}</span>
+              </p>
+              <div>
                 <h5 className="font-bold text-icon">Mô tả chi tiết</h5>
-                <div className="p-2 font-body rounded-sm bg-slate-200 text-icon w-full min-h-[150px]">
-                  <Markup content={diary?.descriptions} className="font-landing text-[95%]" />
+                <div className="p-2 font-body rounded-sm bg-slate-200 text-icon w-full min-h-[150px] ">
+                  <Markup content={diary?.descriptions} className="font-landing text-[95%] !list-disc" />
                 </div>
               </div>
-              <div className="mt-1">
+              <div>
                 <h5 className="font-bold text-icon">Hình ảnh:</h5>
                 <div className="grid grid-cols-3 gap-4">
                   {diary?.images?.map((image, index) => (

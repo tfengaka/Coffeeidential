@@ -27,7 +27,7 @@ const DiaryController = {
           gas: 2000000,
         });
         console.info('CreateDiary TX: ', tx.transactionHash);
-        const diary = new Diary({
+        const diary = await Diary.create({
           product: product_id,
           action_id: action,
           action_name: actionData?.value,
@@ -36,8 +36,8 @@ const DiaryController = {
           tx_hash: tx.transactionHash,
           createdBy: userID,
         });
-        await diary.save();
-        const resData = { ...diary, createdBy: owner?.full_name };
+
+        const resData = { ...diary.toObject(), createdBy: owner?.full_name };
         return res.status(HTTP_STATUS.CREATED).json(resData);
       }
     } catch (error) {
@@ -59,6 +59,7 @@ const DiaryController = {
           return { ...data, createdBy: owner?.full_name };
         })
       );
+
       return res.status(HTTP_STATUS.OK).json({ diaries: resData });
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal server error' });

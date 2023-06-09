@@ -49,8 +49,11 @@ function DiaryCreator() {
         };
         try {
           const res = await DiaryApi.createDiary(product.id, reqData);
-          dispatch(createdDiary(res));
-          navigate(router.dashboard.products.diary.root);
+          if (res) {
+            dispatch(createdDiary(res));
+            navigate(router.dashboard.products.diary.root);
+            toast.success('Đã ghi nhận thông tin!');
+          }
         } catch (error) {
           toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
         } finally {
