@@ -46,15 +46,13 @@ function ProductInfo({ data }: ProductInfoProps) {
             <p className="text-icon">{typeName}</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 pb-2 font-semibold border-b gap-x-2 border-slate-200">
-          <div className="">
-            <h5 className="text-sm text-icon2">Đơn vị sản xuất:</h5>
-            <p className="text-icon">{data?.producer.full_name}</p>
-          </div>
-          <div className="font-semibold">
-            <h5 className="text-sm text-icon2">Ngày sản xuất</h5>
-            <p className="text-icon">{moment(data?.createdAt).format('DD/MM/yyyy')}</p>
-          </div>
+        <div className="pb-2 font-semibold border-b border-slate-200">
+          <h5 className="text-sm text-icon2">Đơn vị sản xuất:</h5>
+          <p className="text-icon">{data?.producer.full_name}</p>
+        </div>
+        <div className="pb-2 font-semibold border-b border-slate-200">
+          <h5 className="text-sm text-icon2">Ngày sản xuất</h5>
+          <p className="text-icon">{moment(data?.createdAt).format('DD/MM/yyyy')}</p>
         </div>
 
         <ProductCertificates certificates={data?.certificated || []} />

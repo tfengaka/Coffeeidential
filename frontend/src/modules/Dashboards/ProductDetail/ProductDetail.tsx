@@ -121,7 +121,7 @@ function ProductDetail() {
                       </div>
                       <Button
                         className="flex items-center justify-center gap-3 px-6 py-3 font-normal text-center duration-[350ms] bg-opacity-[0.15] bg-primary text-primary hover:scale-105 hover:bg-opacity-100 hover:text-white !text-[16px]"
-                        onClick={() => downloadImage(qrData, `PM${product?.id}`)}
+                        onClick={() => downloadImage(qrData, `PM${product?.order_id}`)}
                       >
                         <Icons.Download />
                         Tải xuống QR

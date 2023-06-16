@@ -10,6 +10,10 @@ const ProductController = {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
     }
     try {
+      const alreadyProduct = await Product.findOne({ name: productsdata.name }).exec();
+      if (alreadyProduct) {
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Product already exists!' });
+      }
       const owner = await User.findById({ _id: userID }).exec();
       if (!owner?.wallet) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Bad Request!' });

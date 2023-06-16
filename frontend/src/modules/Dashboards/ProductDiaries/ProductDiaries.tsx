@@ -46,7 +46,7 @@ function ProductDiaries() {
       </div>
       <FormRow>
         <div className="basis-1/3">
-          <TextField title="Mã số" value={product?.id} disable required />
+          <TextField title="Mã số" value={product?.order_id} disable required />
         </div>
         <TextField title="Sản phẩm" value="Cà phê Arabica nguyên chất có bơ" disable required />
       </FormRow>

@@ -5,10 +5,11 @@ import { verifyToken } from '~/middleware';
 import AuthRouter from './auth.route';
 import TypesRouter from './coffeetypes.route';
 import DiaryRouter from './diary.route';
+import LookUpRouter from './lookup.route';
 import ProductRouter from './product.route';
+import TestRouter from './test.route';
 import UnitRouter from './unit.route';
 import UserRouter from './user.route';
-import LookUpRouter from './lookup.route';
 
 const router = Router();
 
@@ -22,5 +23,7 @@ router.use('/users', verifyToken, UserRouter);
 router.use('/diaries', DiaryRouter);
 router.use('/types', TypesRouter);
 router.use('/lookup', LookUpRouter);
+
+router.use('/blockchain', TestRouter);
 
 export default router;
