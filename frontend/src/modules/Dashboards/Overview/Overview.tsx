@@ -32,16 +32,14 @@ function Overview() {
             <div className="relative w-full h-full pb-5 text-white rounded-md bg-primary_gradient shadow-success">
               <img src={images.ribbon_left} alt="" className="absolute top-0 left-0 w-[200px]" />
               <img src={images.ribbon_right} alt="" className="absolute top-0 right-0 w-[200px]" />
-              <div className="flex items-center justify-center w-full mb-2">
-                <div className="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-primary shadow-[0_4px_24px_0_rgba(34,41,47,0.1)] mt-12">
+              <div className="flex items-center justify-center w-full">
+                <div className="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-primary shadow-[0_4px_24px_0_rgba(34,41,47,0.1)] mt-12">
                   <Icons.Star />
                 </div>
               </div>
-              <div className="text-center">
-                <span className="mb-1 text-2xl font-bold font-landing">Welcome!</span>
-                <p className="font-semibold text-md">
-                  Chào mừng <span className="font-bold underline">{user?.full_name}</span> đến với Coffeeidential
-                </p>
+              <div className="text-xl font-bold text-center font-landing">
+                <span>Welcome!</span>
+                <p className="text-lg font-body">{user?.full_name}</p>
               </div>
             </div>
           </div>
@@ -77,7 +75,7 @@ function Overview() {
             <div className="pb-4 font-semibold border-b font-body text-icon border-slate-100">
               <p>Tổng lượt truy xuất</p>
             </div>
-            {data?.scan_count.reverse() && <BarChart width={1050} height={315} dataSet={data.scan_count} />}
+            {data?.scan_count.reverse() && <BarChart width={1050} height={300} dataSet={data.scan_count} />}
           </Card>
           <Card className="p-5 basis-1/3">
             <div className="pb-4 font-semibold border-b font-body text-icon border-slate-100">
@@ -85,21 +83,18 @@ function Overview() {
             </div>
             <div className="w-full mt-2">
               {data &&
-                data.top_products
-                  .sort((a, b) => b.count - a.count)
-                  .slice(0, 5)
-                  .map((item, index) => (
-                    <div key={index} className="flex items-center py-3 rounded-sm select-none gap-x-2">
-                      <img src={item.images[0] || images.logo} alt="" className="object-cover rounded-md w-9 h-9" />
-                      <div className="w-full font-semibold text-icon">
-                        <span className="text-sm truncate">{item.name}</span>
-                        <div className="flex items-baseline gap-x-1">
-                          <div className="relative w-full h-1 rounded-sm bg-primary" />
-                          <b className="flex-shrink-0 text-xs font-black leading-none font-landing">{`${item.count} lượt`}</b>
-                        </div>
+                data.top_products.slice(0, 5).map((item, index) => (
+                  <div key={index} className="flex items-center py-3 rounded-sm select-none gap-x-2">
+                    <img src={item.images[0] || images.logo} alt="" className="object-cover rounded-md w-9 h-9" />
+                    <div className="w-full font-semibold text-icon">
+                      <span className="text-sm truncate">{item.name}</span>
+                      <div className="flex items-baseline gap-x-1">
+                        <div className="relative w-full h-1 rounded-sm bg-primary" />
+                        <b className="flex-shrink-0 text-xs font-black leading-none font-landing">{`${item.count} lượt`}</b>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
             </div>
           </Card>
         </FormRow>

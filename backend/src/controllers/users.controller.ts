@@ -6,7 +6,7 @@ import { compare, genSalt, hash } from 'bcrypt';
 const UserController = {
   updateAccountInfo: async (req: Request, res: Response) => {
     const { full_name, description, userID } = req.body;
-    if (!(full_name && description)) {
+    if (!(full_name || description)) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
       return;
     }

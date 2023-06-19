@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { HTTP_STATUS, formatOrderNumber } from '~/utils';
-import { ProductType, User, Product } from '~/models';
+import { ProductType } from '~/models';
+import { HTTP_STATUS } from '~/utils';
 
 const CoffeeTypeController = {
   createNewType: async (req: Request, res: Response) => {

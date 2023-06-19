@@ -5,7 +5,7 @@ import { UserModel } from '~/type';
 
 const UserSchema = new Schema<UserModel>(
   {
-    order_id: {
+    _id: {
       type: String,
       required: true,
       unique: true,
@@ -41,11 +41,6 @@ const UserSchema = new Schema<UserModel>(
     },
     website: {
       type: String,
-    },
-    wallet: {
-      type: String,
-      required: true,
-      unique: true,
     },
   },
   schemaOptions

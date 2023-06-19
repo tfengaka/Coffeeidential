@@ -22,8 +22,8 @@ function ProductTable({ title, height, data }: ProductTableProps) {
   const handleUpdateStatus = async (id: string, status: boolean) => {
     try {
       const res = await ProductApi.updateProductStatus(id, status);
-      if (res.id) {
-        dispatch(updateStatus({ id: res.id, status }));
+      if (res._id) {
+        dispatch(updateStatus({ id: res._id, status }));
         toast.success('Cập nhật trạng thái thành công');
       }
     } catch (error) {
@@ -69,7 +69,7 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                   <img src={item.images[0] || images.logo} alt="product" className="w-10 h-10" />
                   <div className="ml-2">
                     <p className="font-body text-icon">{item.name}</p>
-                    <p className="text-icon2">{`Mã: ${item.order_id}`}</p>
+                    <p className="text-icon2">{`Mã: ${item._id}`}</p>
                   </div>
                 </td>
                 <td className="w-[15%] px-5 py-2">{item.gtin_code ? item.gtin_code : 'Chưa có'}</td>
@@ -92,7 +92,7 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                   {item.is_production ? (
                     <Button
                       className="flex items-center px-2 py-[2px] text-xs bg-opacity-25 bg-danger text-danger gap-x-2 hover:opacity-80 !rounded-md min-w-[115px]"
-                      onClick={() => handleUpdateStatus(item.id, false)}
+                      onClick={() => handleUpdateStatus(item._id, false)}
                     >
                       <Icons.Close />
                       Vô hiệu hóa
@@ -100,7 +100,7 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                   ) : (
                     <Button
                       className="px-2 py-[2px] bg-[rgba(17,197,219,.15)] text-info text-xs flex items-center gap-x-2 hover:opacity-80 !rounded-md min-w-[115px]"
-                      onClick={() => handleUpdateStatus(item.id, true)}
+                      onClick={() => handleUpdateStatus(item._id, true)}
                     >
                       <Icons.Close />
                       Kích hoạt

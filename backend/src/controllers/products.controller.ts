@@ -1,45 +1,44 @@
 import { Request, Response } from 'express';
+import { contract, web3 } from '~/contract';
+import { Product, ProductType, TXRecord } from '~/models';
 import { HTTP_STATUS, formatOrderNumber } from '~/utils';
-import { ProductType, User, Product } from '~/models';
-import contract, { web3 } from '~/contract';
 
 const ProductController = {
   createProduct: async (req: Request, res: Response) => {
-    const { userID, ...productsdata } = req.body;
-    if (!productsdata) {
+    const { userID, ...productdata } = req.body;
+    if (!productdata) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
     }
     try {
-      const alreadyProduct = await Product.findOne({ name: productsdata.name }).exec();
+      const alreadyProduct = await Product.findOne({ name: productdata.name }).exec();
       if (alreadyProduct) {
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Product already exists!' });
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Sản phẩm này đã được đăng ký trên hệ thống!' });
       }
-      const owner = await User.findById({ _id: userID }).exec();
-      if (!owner?.wallet) {
-        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Bad Request!' });
-      }
-      const isUnlocked = await web3.eth.personal.unlockAccount(owner?.wallet, owner?.password, 3600);
-      if (isUnlocked) {
-        const type = await ProductType.findById(productsdata.product_type).exec();
-        const productCount = await Product.countDocuments();
-        const tx = await contract?.methods
-          .createNewProduct(formatOrderNumber('PM', productCount + 1), productsdata.name, type?.name)
-          .send({
-            from: owner?.wallet,
-            gas: 2000000,
-          });
-        console.info('Created Product TX: ', tx.transactionHash);
-        const product = new Product({
-          ...productsdata,
-          order_id: formatOrderNumber('PM', productCount + 1),
-          producer: userID,
-          token_id: tx.events.createdProduct.returnValues.tokenID,
-          tx_hash: tx.transactionHash,
+      const type = await ProductType.findById(productdata.product_type).exec();
+      const tx = await contract?.methods
+        .createNewProduct(productdata.name, type, productdata.description, productdata.price)
+        .send({
+          from: web3.eth.defaultAccount,
+          gas: 2000000,
         });
-        await product.save();
-        return res.status(HTTP_STATUS.CREATED).json(product);
-      }
-      return res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Cant Unlock Account!' });
+      await TXRecord.create({
+        topic: 'createdProduct',
+        tx_hash: tx.transactionHash,
+        receipt: tx,
+        createdBy: userID,
+      });
+      const productCount = await Product.countDocuments();
+      const product = new Product({
+        ...productdata,
+        _id: formatOrderNumber('PM', productCount + 1),
+        producer: userID,
+        hash_token: tx.events.CreatedProduct.returnValues.id,
+        tx_hash: tx.transactionHash,
+      });
+      await product.save();
+      return res.status(HTTP_STATUS.CREATED).json({
+        product,
+      });
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
       console.error(error);
@@ -68,6 +67,7 @@ const ProductController = {
       res.status(HTTP_STATUS.OK).json(product);
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
+      console.error(error);
     }
   },
   updateProductData: async (req: Request, res: Response) => {
@@ -77,13 +77,14 @@ const ProductController = {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
     }
     try {
-      const product = await Product.findOneAndUpdate({ order_id: id }, { $set: { ...data } }, { new: true });
+      const product = await Product.findByIdAndUpdate(id, { $set: { ...data } }, { new: true });
       if (!product) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found!' });
       }
       res.status(HTTP_STATUS.OK).json(product);
     } catch (error) {
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal Server Error!' });
+      console.error(error);
     }
   },
 };

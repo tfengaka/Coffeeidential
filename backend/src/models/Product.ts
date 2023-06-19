@@ -4,7 +4,7 @@ import { ProductModel } from '~/type';
 
 const ProductSchema = new Schema<ProductModel>(
   {
-    order_id: {
+    _id: {
       type: String,
       required: true,
       unique: true,
@@ -58,17 +58,17 @@ const ProductSchema = new Schema<ProductModel>(
       ref: 'units',
     },
     producer: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'users',
       required: true,
     },
-    token_id: {
+    hash_token: {
       type: String,
       unique: true,
     },
     tx_hash: {
       type: String,
-      required: true,
+      unique: true,
     },
   },
   schemaOptions

@@ -11,15 +11,14 @@ export interface ProductInfo {
   expired_unit?: string;
 }
 export interface Product extends ProductInfo {
-  id: string;
-  order_id: string;
+  _id: string;
   name: string;
   product_type: string;
   is_production: boolean;
   createdAt: string;
 }
 export interface Diary {
-  id: string;
+  _id: string;
   action_id: string;
   action_name: string;
   descriptions: string;
@@ -31,7 +30,6 @@ export interface Diary {
 }
 export interface AuthUser {
   _id: string;
-  order_id: string;
   full_name: string;
   email: string;
   phone?: string;
@@ -66,10 +64,9 @@ export interface JWTDecoded {
   exp: number;
 }
 export interface LookUpProducer {
-  order_id: string;
+  _id: string;
   full_name: string;
   email: string;
-  wallet: string;
 }
 export interface LookUpProduct extends Product {
   producer: AuthUser;
@@ -84,13 +81,17 @@ export interface ChartData {
   date: string;
   count: number;
 }
-export interface topProduct {
-  order_id: string;
+export interface TopProduct {
+  _id: string;
   name: string;
   images: string[];
-  count: number;
+  description?: string;
+  product_type?: string;
+  price?: number;
+  count?: number;
+  producer?: AuthUser;
 }
 export interface OverviewData {
   scan_count: ChartData[];
-  top_products: topProduct[];
+  top_products: TopProduct[];
 }

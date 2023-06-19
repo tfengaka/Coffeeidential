@@ -43,7 +43,7 @@ function Products() {
         </div>
       </div>
       <div className="relative">
-        <ProductTable height={630} data={products} />
+        <ProductTable height={600} data={products} />
       </div>
     </div>
   );

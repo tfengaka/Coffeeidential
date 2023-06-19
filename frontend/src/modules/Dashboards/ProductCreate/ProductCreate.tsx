@@ -59,7 +59,7 @@ function ProductCreate() {
         console.log(res);
         dispatch(addProduct(res));
         navigate(router.dashboard.products.root);
-        toast.success('Tạo sản phẩm thành công');
+        toast.success('Ghi nhận sản phẩm thành công');
       }
     } catch (error) {
       toast.error('Có lỗi xảy ra, vui lòng thử lại sau');

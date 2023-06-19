@@ -30,7 +30,7 @@ const DiarySchema = new Schema<DiaryModel>(
       required: true,
     },
     createdBy: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'users',
       required: true,
     },

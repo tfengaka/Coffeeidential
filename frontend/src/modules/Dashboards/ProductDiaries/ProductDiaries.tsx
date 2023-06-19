@@ -19,15 +19,15 @@ function ProductDiaries() {
   useEffect(() => {
     (async () => {
       try {
-        if (!product?.id) return;
-        const res = await DiaryApi.getDiariesByProductId(product?.id);
+        if (!product?._id) return;
+        const res = await DiaryApi.getDiariesByProductId(product?._id);
         dispatch(setDiaries(res.diaries));
       } catch (error) {
         toast.error('Lỗi lấy dữ liệu nhật ký sản xuất');
         console.error(error);
       }
     })();
-  }, [dispatch, product?.id]);
+  }, [dispatch, product?._id]);
 
   return (
     <Card className="w-full px-6 py-5 mt-5 rounded-md font-body">
@@ -46,9 +46,9 @@ function ProductDiaries() {
       </div>
       <FormRow>
         <div className="basis-1/3">
-          <TextField title="Mã số" value={product?.order_id} disable required />
+          <TextField title="Mã số" value={product?._id} disable required />
         </div>
-        <TextField title="Sản phẩm" value="Cà phê Arabica nguyên chất có bơ" disable required />
+        <TextField title="Sản phẩm" value={product?.name} disable required />
       </FormRow>
       <DiariesTable diaries={diaries} openModal={() => setOpenModal(true)} />
       {openModal && <DiaryModal product={product} onClose={() => setOpenModal(false)} />}

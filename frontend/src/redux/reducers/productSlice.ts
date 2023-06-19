@@ -23,7 +23,7 @@ const productSlice = createSlice({
     },
     updateStatus: (state, action) => {
       const { id, status } = action.payload;
-      const index = state.products.findIndex((product) => product.id === id);
+      const index = state.products.findIndex((product) => product._id === id);
       if (index !== -1) {
         state.products[index].is_production = status;
       }
@@ -33,7 +33,7 @@ const productSlice = createSlice({
     },
     updateProductInfo: (state, { payload }) => {
       const { product } = payload;
-      const index = state.products.findIndex((p) => p.id === product.id);
+      const index = state.products.findIndex((p) => p._id === product._id);
       if (index !== -1) {
         state.products[index] = product;
         state.product = product;

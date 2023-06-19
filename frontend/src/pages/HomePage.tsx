@@ -4,6 +4,7 @@ import Icons from '~/assets/icons';
 import images from '~/assets/images';
 import { Button, Card, TextField } from '~/components';
 import router from '~/constants/routers';
+import { ProductSlider } from '~/modules/Home';
 
 const benefitArr = [
   {
@@ -42,6 +43,7 @@ const featureArr = [
 
 function Home() {
   const [emailContact, setEmailContact] = useState('');
+
   return (
     <div className="font-landing">
       {/* Header */}
@@ -108,7 +110,7 @@ function Home() {
         </div>
       </div>
       {/* Benefit */}
-      <div className="w-[70%] mx-auto mb-40">
+      <div className="w-[70%] mx-auto mb-20">
         <div className="flex items-center justify-between gap-x-4">
           {benefitArr.map((item, index) => (
             <Card className="p-5" key={index}>
@@ -123,11 +125,18 @@ function Home() {
           ))}
         </div>
       </div>
+      {/* Top Products */}
+      <div className="w-full mx-auto mb-20">
+        <div className="flex items-center justify-between px-72 gap-x-4">
+          <h2 className="font-bold text-icon text-[26px] mb-10 uppercase">Sản phẩm nổi bật</h2>
+        </div>
+        <ProductSlider className="px-72" />
+      </div>
       {/* feature */}
       <div className="w-[70%] mx-auto ">
         <div className="relative mb-7">
           <div className="absolute -left-[40px] -top-[40px] w-[148px] h-[78px] bg-primary bg-opacity-10 rounded-[0_20px_0_20px]" />
-          <h2 className="font-bold text-icon text-[26px] mb-4">TÍNH NĂNG ĐƠN GIẢN VÀ THÂN THIỆN</h2>
+          <h2 className="font-bold text-icon text-[26px] mb-4 uppercase">TÍNH NĂNG ĐƠN GIẢN VÀ THÂN THIỆN</h2>
           <p className="text-lg font-semibold text-icon2">
             Phù hợp với mọi đối tượng sử dụng và dễ dàng thao tác trên điện thoại
           </p>

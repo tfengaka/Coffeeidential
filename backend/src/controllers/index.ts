@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import contract, { web3 } from '~/contract';
+import { web3, contract } from '~/contract';
 import { HTTP_STATUS } from '~/utils';
 
 const getNodeStatus = async (req: Request, res: Response) => {
@@ -8,14 +8,13 @@ const getNodeStatus = async (req: Request, res: Response) => {
     const nodeInfo = await web3.eth.getNodeInfo();
     const chainID = await web3.eth.getChainId();
     const PeerCount = await web3.eth.net.getPeerCount();
-    const account = web3.eth.defaultAccount;
     res.json({
       chain_id: chainID,
       node_Info: nodeInfo,
       network_type: NetworkType,
       peer_count: PeerCount,
-      default_account: account,
       contract: contract.options.address,
+      default_wallet: web3.eth.defaultAccount,
     });
   } catch (err) {
     console.log(err);

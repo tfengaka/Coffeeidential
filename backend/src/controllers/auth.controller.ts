@@ -66,32 +66,20 @@ const AuthController = {
       const salt = await genSalt(10);
       const hashedPassword = await hash(password, salt);
 
-      // * Create Blockchain Wallet Address
-      const address = await web3.eth.personal.newAccount(hashedPassword);
-      if (!address) {
-        res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Create wallet failed!' });
-      }
-      //* Deposit 6M to new wallet
-      const rootAccount = web3.eth.defaultAccount;
-      if (rootAccount) {
-        const tx = await web3.eth.sendTransaction({
-          from: rootAccount,
-          to: address,
-          value: 6000000, //* default gas limit
-        });
-        console.info('Deposit TX: ', tx.transactionHash);
-      }
-
       //* Save to database
       const accountCount = await User.countDocuments();
-      const newAccount = await new User({
-        order_id: formatOrderNumber('MA', accountCount + 1),
+      await User.create({
+        _id: formatOrderNumber('MA', accountCount + 1),
         email,
         password: hashedPassword,
         full_name,
-        wallet: address,
+        avatar: null,
+        description: null,
+        address: null,
+        phone: null,
+        website: null,
+        banner: null,
       });
-      await newAccount.save();
 
       res.status(HTTP_STATUS.CREATED).json({
         message: 'Đăng ký thành công!\n Vui lòng đăng nhập để tiếp tục!',

@@ -7,6 +7,7 @@ import Diary from './Diary';
 import Distribution from './Distribution';
 import Download from './Download';
 import Edit from './Edit';
+import Email from './Email';
 import Eye from './Eye';
 import Globe from './Globe';
 import Home from './Home';
@@ -14,6 +15,9 @@ import HomeOutline from './HomeOutline';
 import Identification from './Identification';
 import Infomation from './Infomation';
 import Key from './Key';
+import Link from './Link';
+import Location from './Location';
+import Logout from './Logout';
 import PackInfo from './PackInfo';
 import Phone from './Phone';
 import Plus from './Plus';
@@ -23,11 +27,9 @@ import Star from './Star';
 import Tree from './Tree';
 import Upload from './Upload';
 import User from './User';
-import Email from './Email';
-import Location from './Location';
-import Logout from './Logout';
 
 export default {
+  Link,
   Location,
   PackInfo,
   Logout,

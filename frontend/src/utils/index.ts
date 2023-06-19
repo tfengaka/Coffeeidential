@@ -37,3 +37,11 @@ export const onImagesRemove = (targetValue: string[], index: number, callback: (
   cloneImages[index] = '';
   callback(cloneImages);
 };
+
+export const formatCurrency = (value: number) => {
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+  return VND.format(value);
+};

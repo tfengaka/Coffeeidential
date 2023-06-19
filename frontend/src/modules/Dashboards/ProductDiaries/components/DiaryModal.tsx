@@ -48,30 +48,37 @@ function DiaryModal({ product, onClose }: DiaryModalProps) {
                 <span className="text-icon">Sản phẩm: </span>
                 <span className="text-icon2">{product?.name}</span>
                 <p className="font-bold text-icon">
-                  Mã sản phẩm: <span className="text-icon2">{product?.order_id}</span>
+                  Mã sản phẩm: <span className="text-icon2">{product?._id}</span>
                 </p>
               </div>
-              <FormRow>
-                <div className="w-full">
-                  <span className="font-bold text-icon">Ghi nhận bởi: </span>
-                  <span className="font-bold text-icon2">{diary?.createdBy}</span>
-                </div>
-                <div className="w-full">
-                  <span className="font-bold text-icon">Thời gian: </span>
-                  <span className="text-sm font-bold text-icon2">
-                    {moment(diary?.createdAt).format('DD/MM/yyyy - HH:MM A')}
-                  </span>
-                </div>
-              </FormRow>
-              <p className="font-bold text-icon">
-                Mã băm: <span className="text-sm text-icon2">{diary?.tx_hash}</span>
-              </p>
-              <div>
-                <h5 className="font-bold text-icon">Mô tả chi tiết</h5>
-                <div className="p-2 font-body rounded-sm bg-slate-200 text-icon w-full min-h-[150px] ">
-                  <Markup content={diary?.descriptions} className="font-landing text-[95%] !list-disc" />
-                </div>
+              <div className="w-full">
+                <span className="font-bold text-icon">Ghi nhận bởi: </span>
+                <span className="font-bold text-icon2">{diary?.createdBy}</span>
               </div>
+              <FormRow>
+                <div className="flex items-center justify-between w-full mb-1">
+                  <div>
+                    <span className="font-bold text-icon">Thời gian: </span>
+                    <span className="text-sm font-bold text-icon2">
+                      {moment(diary?.createdAt).format('DD/MM/yyyy - HH:MM A')}
+                    </span>
+                  </div>
+                  <a
+                    href={`${import.meta.env.VITE_EXPLORER_URL}/tx/${diary?.tx_hash}`}
+                    className="inline-flex ml-1 font-bold underline transition-colors text-primary20 gap-x-1"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Xem chi tiết
+                  </a>
+                </div>
+                {/* <div className="flex items-center w-full mb-1 font-bold gap-x-1 text-icon"></div> */}
+              </FormRow>
+
+              <div className="p-2 font-body rounded-sm bg-slate-200 text-icon w-full min-h-[150px] ">
+                <Markup content={diary?.descriptions} className="font-landing text-[95%] !list-disc" />
+              </div>
+
               <div>
                 <h5 className="font-bold text-icon">Hình ảnh:</h5>
                 <div className="grid grid-cols-3 gap-4">

@@ -26,3 +26,4 @@ export { default as User } from './User';
 export { default as Product } from './Product';
 export { default as Lookup } from './Lookup';
 export { default as Diary } from './Diary';
+export { default as TXRecord } from './TXRecord';

@@ -2,7 +2,7 @@ import { UserModel } from './type.d';
 import { ObjectId } from 'mongoose';
 
 export interface UserData {
-  order_id: string;
+  _id: string;
   full_name: string;
   email: string;
   phone?: string;
@@ -11,7 +11,7 @@ export interface UserData {
   address?: string;
   description?: string;
   website?: string;
-  wallet: string;
+  wallet?: string;
 }
 
 export type UserModel = UserData & {
@@ -19,8 +19,8 @@ export type UserModel = UserData & {
 };
 
 export interface ProductModel {
-  order_id: string;
-  token_id: string;
+  _id: string;
+  hash_token: string;
   name: string;
   price: number;
   description: string;
@@ -58,4 +58,11 @@ export interface UnitModel {
 export interface ProductTypeModel {
   name: string;
   createdBy: ObjectId;
+}
+
+export interface TXRecordModel {
+  topic: string;
+  tx_hash: string;
+  receipt: object;
+  createdBy: string;
 }

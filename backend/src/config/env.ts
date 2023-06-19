@@ -8,6 +8,7 @@ interface IEnv {
   BLOCKCHAIN_RPC: string;
   MONGODB_URI: string;
   CONTRACT_ADDRESS?: string;
+  PRIVATE_KEY?: string;
 }
 
 const env: IEnv = {
@@ -17,6 +18,7 @@ const env: IEnv = {
   BLOCKCHAIN_RPC: process.env.BLOCKCHAIN_RPC || '',
   MONGODB_URI: process.env.MONGODB_URI || '',
   CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS,
+  PRIVATE_KEY: process.env.PRIVATE_KEY,
 };
 
 export default env;

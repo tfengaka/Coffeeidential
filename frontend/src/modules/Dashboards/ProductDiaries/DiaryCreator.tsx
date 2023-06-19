@@ -41,14 +41,14 @@ function DiaryCreator() {
 
   const onSubmit = handleSubmit(async (data) => {
     if (images.length > 0) {
-      if (product?.id) {
+      if (product?._id) {
         setLoading(true);
         const reqData = {
           ...data,
           images,
         };
         try {
-          const res = await DiaryApi.createDiary(product.id, reqData);
+          const res = await DiaryApi.createDiary(product._id, reqData);
           if (res) {
             dispatch(createdDiary(res));
             navigate(router.dashboard.products.diary.root);
@@ -83,7 +83,7 @@ function DiaryCreator() {
         <div className="flex flex-col mt-4 gap-y-2">
           <FormRow className="items-end !gap-x-10">
             <div className="basis-2/3">
-              <TextField title="Mã số" value={product?.order_id} disable required />
+              <TextField title="Mã số" value={product?._id} disable required />
               <TextField title="Sản phẩm" value={product?.name} disable required />
               <FormSelect
                 title="Hành động"

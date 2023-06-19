@@ -43,11 +43,9 @@ function Topbar() {
           <Card
             className={`${
               openMenu ? 'block' : 'hidden'
-            } absolute right-0 w-full py-2 rounded-md -bottom-23 shadow-dropdown`}
+            } absolute right-0 w-full max-w-[200px] py-2 rounded-md -bottom-23 shadow-dropdown`}
           >
-            <h6 className="px-2 pb-2 mb-2 text-sm font-medium border-b border-slate-200 text-slate-500">
-              Xin chào, <span className="text-base font-bold text-primary">{user?.full_name}</span>
-            </h6>
+            <h6 className="px-2 pb-2 mb-2 text-sm font-medium border-b border-slate-200 text-slate-500">Xin chào,</h6>
             <Link
               to={router.dashboard.profile.root}
               className="flex items-center px-3 py-2 font-medium transition-colors rounded-sm gap-x-4 text-icon hover:text-primary hover:bg-slate-200 hover:bg-opacity-50"

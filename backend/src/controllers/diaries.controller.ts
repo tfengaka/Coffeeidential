@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import contract, { web3 } from '~/contract';
-import { Diary, Product, Unit, User } from '~/models';
-import { HTTP_STATUS } from '~/utils';
+import { web3, contract } from '~/contract';
+import { Diary, Product, TXRecord, Unit, User } from '~/models';
+import { HTTP_STATUS, cleanHTMLTagFromString } from '~/utils';
 
 const DiaryController = {
   createDiary: async (req: Request, res: Response) => {
@@ -11,35 +11,44 @@ const DiaryController = {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad request' });
     }
     try {
-      const owner = await User.findById(userID).exec();
-      if (!owner?.wallet) {
-        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Not Found Owner!' });
-      }
       const product = await Product.findById(product_id).exec();
-      if (product?.producer.toString() !== userID) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'You are not owner of this product!' });
+      if (!product) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Không tìm thấy sản phẩm!' });
       }
-      const isUnlocked = await web3.eth.personal.unlockAccount(owner?.wallet, owner?.password, 3600);
-      if (isUnlocked) {
-        const actionData = await Unit.findById(action).exec();
-        const tx = await contract?.methods.createDiary(product?.token_id, actionData?.value, descriptions).send({
-          from: owner?.wallet,
-          gas: 2000000,
-        });
-        console.info('CreateDiary TX: ', tx.transactionHash);
-        const diary = await Diary.create({
-          product: product_id,
-          action_id: action,
-          action_name: actionData?.value,
-          descriptions,
-          images,
-          tx_hash: tx.transactionHash,
-          createdBy: userID,
-        });
+      if (product.producer.toString() !== userID) {
+        return res
+          .status(HTTP_STATUS.UNAUTHORIZED)
+          .json({ message: 'Bạn không có quyền ghi thông tin vào sản phẩm này!' });
+      }
+      const owner = await User.findById(userID).exec();
+      const actionData = await Unit.findById(action).exec();
 
-        const resData = { ...diary.toObject(), createdBy: owner?.full_name };
-        return res.status(HTTP_STATUS.CREATED).json(resData);
-      }
+      const cleanDescriptions = cleanHTMLTagFromString(descriptions);
+
+      const tx = await contract?.methods.createDiary(product.hash_token, actionData?.value, cleanDescriptions).send({
+        from: web3.eth.defaultAccount,
+        gas: 2000000,
+      });
+
+      await TXRecord.create({
+        topic: 'createdDiary',
+        tx_hash: tx.transactionHash,
+        receipt: tx,
+        createdBy: userID,
+      });
+
+      const diary = await Diary.create({
+        product: product_id,
+        action_id: action,
+        action_name: actionData?.value,
+        descriptions,
+        images,
+        tx_hash: tx.transactionHash,
+        createdBy: userID,
+      });
+
+      const resData = { ...diary.toObject(), createdBy: owner?.full_name };
+      return res.status(HTTP_STATUS.CREATED).json(resData);
     } catch (error) {
       console.error(error);
       res.status(HTTP_STATUS.INTERNAL_SERVER).json({ message: 'Internal server error' });

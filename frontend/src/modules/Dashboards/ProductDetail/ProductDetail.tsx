@@ -1,24 +1,24 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import QRCode from 'qrcode';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { ProductApi } from '~/api';
 import Icons from '~/assets/icons';
 import { Button, Card, FormInput, FormRow, FormSelect, Loading, QuillEditor, TextField, Uploader } from '~/components';
 import router from '~/constants/routers';
-import { useFetchUnit } from '~/hooks';
+import { useFetchUnit, useQRCode } from '~/hooks';
 import { useAppDispatch, useAppSelector } from '~/redux';
 import { updateProductInfo } from '~/redux/reducers/productSlice';
 import { downloadImage, onImagesChange, onImagesRemove } from '~/utils';
 
 function ProductDetail() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { loading, selling_unit, expiry_unit, product_types } = useFetchUnit();
-  const [qrData, setQRData] = useState('');
   const product = useAppSelector((state) => state.product.product);
+  const qrData = useQRCode(`${window.location.protocol}//${window.location.host}/lookup/${product?._id}`);
   const {
     control,
     handleSubmit,
@@ -46,28 +46,6 @@ function ProductDetail() {
   const [box_images, setBoxImages] = useState<string[]>(product?.box_images || []);
   const [certificated, setCertificated] = useState<string[]>(product?.certificated || []);
 
-  useEffect(() => {
-    // initial QR Code
-    (function () {
-      const QRValue = `${window.location.protocol}//${window.location.host}/lookup/${product?.order_id}`;
-      QRCode.toDataURL(
-        QRValue,
-        {
-          width: 256,
-          margin: 1,
-          color: {
-            dark: '#000000FF',
-            light: '#ffffff',
-          },
-        },
-        (err, url) => {
-          if (err) return console.error(err);
-          setQRData(url);
-        }
-      );
-    })();
-  }, [product]);
-
   const onSubmit = handleSubmit(async (data) => {
     const reqData = {
       ...data,
@@ -75,13 +53,14 @@ function ProductDetail() {
       box_images,
       certificated,
     };
-    if (product?.order_id) {
+    if (product?._id) {
       try {
-        const res = await ProductApi.updateProductInfo(product?.order_id, reqData);
+        const res = await ProductApi.updateProductInfo(product?._id, reqData);
         dispatch(updateProductInfo({ product: res }));
+        navigate(router.dashboard.products.root);
         toast.success('Cập nhật thông tin thành công!');
       } catch (error) {
-        toast.error('Cập nhật thông tin không thành công!');
+        toast.error('Có lỗi xảy ra trong quá trình xử lý!');
       }
     }
   });
@@ -117,18 +96,18 @@ function ProductDetail() {
                     <div className="flex flex-col gap-y-5">
                       <div>
                         <span className="font-medium text-icon">Mã sản phẩm: </span>
-                        <span className="font-semibold text-primary">{product?.order_id}</span>
+                        <span className="font-semibold text-primary">{product?._id}</span>
                       </div>
                       <Button
                         className="flex items-center justify-center gap-3 px-6 py-3 font-normal text-center duration-[350ms] bg-opacity-[0.15] bg-primary text-primary hover:scale-105 hover:bg-opacity-100 hover:text-white !text-[16px]"
-                        onClick={() => downloadImage(qrData, `PM${product?.order_id}`)}
+                        onClick={() => downloadImage(qrData, `PM${product?._id}`)}
                       >
                         <Icons.Download />
                         Tải xuống QR
                       </Button>
                       <Link
                         className="flex items-center justify-center gap-3 px-6 py-3 font-normal text-center duration-[350ms] bg-opacity-[0.15] bg-primary text-primary hover:scale-105 hover:bg-opacity-100 hover:text-white"
-                        to={`${router.home.lookup}/${product?.order_id}`}
+                        to={`${router.home.lookup}/${product?._id}`}
                         target="_blank"
                       >
                         <Icons.Search />

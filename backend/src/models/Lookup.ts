@@ -4,7 +4,7 @@ import { schemaOptions } from '~/models';
 const LookupSchema = new Schema(
   {
     product: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'products',
       required: true,
     },

@@ -1,5 +1,6 @@
 import { Markup } from 'interweave';
 import moment from 'moment';
+import Icons from '~/assets/icons';
 import { LookUpDiary } from '~/types';
 
 interface IDiaryProcess {
@@ -20,7 +21,7 @@ function DiaryProcess({ data }: IDiaryProcess) {
         <span className="text-icon2">Cập nhật bởi: </span>
         <span className="text-icon">{data.createdBy.full_name}</span>
       </div>
-      <div>
+      <div className="mb-1">
         <h5 className="text-sm font-bold text-icon2">Hình ảnh:</h5>
         <div className="flex items-center gap-x-4">
           {data.images.map((image, index) => (
@@ -28,6 +29,15 @@ function DiaryProcess({ data }: IDiaryProcess) {
           ))}
         </div>
       </div>
+      <a
+        href={`${import.meta.env.VITE_EXPLORER_URL}/tx/${data?.tx_hash}`}
+        className="inline-flex text-icon text-sm font-bold underline transition-colors hover:text-primary20 gap-x-[2px]"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Thông tin đã được xác thực trên Blockchain
+        <Icons.Link />
+      </a>
     </li>
   );
 }

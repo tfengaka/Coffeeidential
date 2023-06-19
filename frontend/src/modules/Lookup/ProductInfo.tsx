@@ -39,7 +39,7 @@ function ProductInfo({ data }: ProductInfoProps) {
         <div className="grid grid-cols-2 pb-2 border-b gap-x-2 border-slate-200">
           <div className="font-semibold">
             <h5 className="text-sm text-icon2">Mã sản phẩm</h5>
-            <p className="text-icon">{data?.order_id}</p>
+            <p className="text-icon">{data?._id}</p>
           </div>
           <div className="font-semibold">
             <h5 className="text-sm text-icon2">Giống</h5>
