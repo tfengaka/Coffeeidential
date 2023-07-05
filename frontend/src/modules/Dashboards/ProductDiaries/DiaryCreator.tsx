@@ -70,7 +70,7 @@ function DiaryCreator() {
       <form onSubmit={onSubmit}>
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="text-xl font-semibold text-icon">Mô tả sản phẩm</h3>
+            <h3 className="text-xl font-semibold text-icon">Mô tả quy trình</h3>
             <p className="text-icon2 text-md">Thông tin chi tiết về quá trình sản xuất</p>
           </div>
           <Button

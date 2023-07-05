@@ -6,6 +6,7 @@ import Icons from '~/assets/icons';
 import images from '~/assets/images';
 import { BarChart, Card, FormRow } from '~/components';
 import { overviewLinks } from '~/constants/navlinks';
+import router from '~/constants/routers';
 import { useAppSelector } from '~/redux';
 import { OverviewData } from '~/types';
 
@@ -86,11 +87,16 @@ function Overview() {
                 data.top_products.slice(0, 5).map((item, index) => (
                   <div key={index} className="flex items-center py-3 rounded-sm select-none gap-x-2">
                     <img src={item.images[0] || images.logo} alt="" className="object-cover rounded-md w-9 h-9" />
-                    <div className="w-full font-semibold text-icon">
-                      <span className="text-sm truncate">{item.name}</span>
-                      <div className="flex items-baseline gap-x-1">
-                        <div className="relative w-full h-1 rounded-sm bg-primary" />
-                        <b className="flex-shrink-0 text-xs font-black leading-none font-landing">{`${item.count} lượt`}</b>
+                    <div className="w-full">
+                      <Link
+                        to={`${router.home.lookup}/${item?._id}`}
+                        className="w-full max-w-[92%] text-sm truncate  font-semibold text-icon hover:text-primary20 cursor-pointer transition-colors inline-block"
+                      >
+                        {item.name}
+                      </Link>
+                      <div className="flex items-baseline w-full text-xs font-bold gap-x-1 font-landing">
+                        <span className="text-slate-800">Lượt tra cứu:</span>
+                        <b className="leading-none text-primary">{`${item.count} lượt`}</b>
                       </div>
                     </div>
                   </div>

@@ -61,9 +61,8 @@ function ProductCreate() {
         navigate(router.dashboard.products.root);
         toast.success('Ghi nhận sản phẩm thành công');
       }
-    } catch (error) {
-      toast.error('Có lỗi xảy ra, vui lòng thử lại sau');
-      console.error(error);
+    } catch (error: any) {
+      toast.error(error);
     } finally {
       setLoading(false);
     }

@@ -9,21 +9,27 @@ import router from '~/routes';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
+import { Loading } from './components';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ReduxProvider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+    <PersistGate
+      loading={
+        <div className="flex items-center justify-center h-screen">
+          <Loading />
+        </div>
+      }
+      persistor={persistor}
+    >
       <RouterProvider router={router} />
       <ToastContainer
         position="top-right"
-        autoClose={3000}
+        autoClose={1500}
         hideProgressBar
         newestOnTop={false}
         closeOnClick
-        rtl={false}
         pauseOnFocusLoss={false}
         draggable={false}
-        pauseOnHover
         theme="colored"
       />
     </PersistGate>

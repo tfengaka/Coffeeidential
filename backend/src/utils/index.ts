@@ -11,9 +11,3 @@ export function formatOrderNumber(prefix: string, number: number) {
   const numberString = number.toString().padStart(10, '0');
   return prefix + numberString;
 }
-
-export function cleanHTMLTagFromString(str: string) {
-  const div = document.createElement('div');
-  div.innerHTML = str.trim();
-  return div.textContent || div.innerText || '';
-}

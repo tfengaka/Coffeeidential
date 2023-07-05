@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { web3, contract } from '~/contract';
 import { Diary, Product, TXRecord, Unit, User } from '~/models';
-import { HTTP_STATUS, cleanHTMLTagFromString } from '~/utils';
+import { HTTP_STATUS } from '~/utils';
 
 const DiaryController = {
   createDiary: async (req: Request, res: Response) => {
@@ -23,9 +23,7 @@ const DiaryController = {
       const owner = await User.findById(userID).exec();
       const actionData = await Unit.findById(action).exec();
 
-      const cleanDescriptions = cleanHTMLTagFromString(descriptions);
-
-      const tx = await contract?.methods.createDiary(product.hash_token, actionData?.value, cleanDescriptions).send({
+      const tx = await contract?.methods.createDiary(product.hash_token, actionData?.value, descriptions).send({
         from: web3.eth.defaultAccount,
         gas: 2000000,
       });

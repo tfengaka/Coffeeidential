@@ -13,7 +13,7 @@ const initialServer = () => {
       origin: '*',
     })
   );
-  app.use(express.json({ limit: '25mb' }));
+  app.use(express.json({ limit: '50mb' }));
   app.use(cookieParser());
   app.use(morgan('[:method] - [:date[web]] - [:remote-addr] - :url - [:status] - :response-time ms'));
 

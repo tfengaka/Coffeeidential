@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
-import { Diary, Lookup, Product, ProductType, User } from '~/models';
+import { Diary, Lookup, Product, ProductType, Unit, User } from '~/models';
 import { ProductModel, UserModel } from '~/type';
 import { HTTP_STATUS } from '~/utils';
 
@@ -78,8 +78,9 @@ const LookupController = {
       const data = await Product.find({ is_production: true }).exec();
       const topProducts = await Promise.all(
         data.map(async (item) => {
-          const { _id, name, images, description, price, product_type } = item.toObject();
+          const { _id, name, images, description, price, product_type, selling_unit } = item.toObject();
           const typeName = await ProductType.findById(product_type).exec();
+          const sellUnit = await Unit.findById(selling_unit).exec();
           const owner = await User.findById(item.producer).exec();
           return {
             _id,
@@ -87,6 +88,7 @@ const LookupController = {
             images,
             description,
             price,
+            selling_unit: sellUnit?.value,
             product_type: typeName?.name,
             producer: {
               _id: owner?.id,

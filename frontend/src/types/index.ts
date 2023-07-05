@@ -15,6 +15,7 @@ export interface Product extends ProductInfo {
   name: string;
   product_type: string;
   is_production: boolean;
+  tx_hash?: string;
   createdAt: string;
 }
 export interface Diary {
@@ -88,6 +89,7 @@ export interface TopProduct {
   description?: string;
   product_type?: string;
   price?: number;
+  selling_unit?: string;
   count?: number;
   producer?: AuthUser;
 }

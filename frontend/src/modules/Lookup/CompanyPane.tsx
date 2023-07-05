@@ -22,19 +22,21 @@ function CompanyPane({ isActive, producer }: ICompanyPane) {
         <h4 className="mb-4 text-xl font-bold">Thông tin liên hệ</h4>
         <div className="flex flex-col gap-y-6">
           {/* Phone */}
-          <div className="flex items-center px-2 gap-x-6">
-            <div className="p-3 text-white rounded-full bg-primary20">
-              <Icons.Phone />
-            </div>
-            {producer?.phone && (
+          {producer?.phone && (
+            <div className="flex items-center px-2 gap-x-6">
+              <div className="p-3 text-white rounded-full bg-primary20">
+                <Icons.Phone />
+              </div>
+
               <a
                 className="text-base font-bold underline transition-colors hover:text-primary text-icon"
                 href={`tel:${producer.phone}`}
               >
                 {producer.phone}
               </a>
-            )}
-          </div>
+            </div>
+          )}
+
           {/* Email */}
           <div className="flex items-center px-2 gap-x-6">
             <div className="p-3 text-white rounded-full bg-primary20">
@@ -48,30 +50,34 @@ function CompanyPane({ isActive, producer }: ICompanyPane) {
             </a>
           </div>
           {/* Website */}
-          <div className="flex items-center px-2 gap-x-6">
-            <div className="p-3 text-white rounded-full bg-primary20">
-              <Icons.Globe />
+          {producer?.website && (
+            <div className="flex items-center px-2 gap-x-6">
+              <div className="p-3 text-white rounded-full bg-primary20">
+                <Icons.Globe />
+              </div>
+              <a
+                className="text-base font-bold underline transition-colors hover:text-primary text-icon"
+                href={producer?.website}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {producer?.website}
+              </a>
             </div>
-            <a
-              className="text-base font-bold underline transition-colors hover:text-primary text-icon"
-              href={producer?.website}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {producer?.website}
-            </a>
-          </div>
+          )}
           {/* Address */}
-          <div className="flex items-center px-2 gap-x-6">
-            <div className="p-3 text-white rounded-full bg-primary20">
-              <Icons.Location />
+          {producer?.address && (
+            <div className="flex items-center px-2 gap-x-6">
+              <div className="p-3 text-white rounded-full bg-primary20">
+                <Icons.Location />
+              </div>
+              {producer?.address && (
+                <span className="text-base font-bold transition-colors hover:text-primary text-icon">
+                  {producer.address}
+                </span>
+              )}
             </div>
-            {producer?.address && (
-              <span className="text-base font-bold transition-colors hover:text-primary text-icon">
-                {'Số 450 Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh'}
-              </span>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>

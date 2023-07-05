@@ -44,7 +44,7 @@ function ProductTable({ title, height, data }: ProductTableProps) {
         <thead className="w-full font-semibold text-[15px] font-body text-icon border-b border-slate-200">
           <tr className="flex items-center w-full text-left select-none">
             <th className="px-5 py-3">STT</th>
-            <th className="flex-auto px-5 py-3">Sản phẩm</th>
+            <th className="flex-auto px-5 py-3 max-w-[35%]">Sản phẩm</th>
             <th className="w-[15%] px-5 py-3">Mã GTIN</th>
             <th className="w-[10%] px-5 py-3">Trạng thái</th>
             <th className="w-2/12 px-5 py-3">Ngày sản xuất</th>
@@ -65,10 +65,10 @@ function ProductTable({ title, height, data }: ProductTableProps) {
                 key={index}
               >
                 <td className="px-5 py-2 text-icon">{index + 1}</td>
-                <td className="flex items-center flex-auto px-5 py-2 gap-x-4">
-                  <img src={item.images[0] || images.logo} alt="product" className="w-10 h-10" />
-                  <div className="ml-2">
-                    <p className="font-body text-icon">{item.name}</p>
+                <td className="flex items-center flex-auto px-5 py-2 gap-x-4 max-w-[35%]">
+                  <img src={item.images?.[0] || images.logo} alt="product" className="w-10 h-10" />
+                  <div className="flex-grow-0 max-w-[85%] ml-2">
+                    <p className="truncate font-body text-icon">{item.name}</p>
                     <p className="text-icon2">{`Mã: ${item._id}`}</p>
                   </div>
                 </td>

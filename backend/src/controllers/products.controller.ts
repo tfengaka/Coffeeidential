@@ -7,7 +7,9 @@ const ProductController = {
   createProduct: async (req: Request, res: Response) => {
     const { userID, ...productdata } = req.body;
     if (!productdata) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Bad Request!' });
+      return res
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ message: 'Dữ liệu chưa đẩy đủ, Vui lòng bổ sung thêm thông tin!' });
     }
     try {
       const alreadyProduct = await Product.findOne({ name: productdata.name }).exec();
@@ -16,7 +18,7 @@ const ProductController = {
       }
       const type = await ProductType.findById(productdata.product_type).exec();
       const tx = await contract?.methods
-        .createNewProduct(productdata.name, type, productdata.description, productdata.price)
+        .createNewProduct(productdata.name, type?.name, productdata.description, productdata.price)
         .send({
           from: web3.eth.defaultAccount,
           gas: 2000000,

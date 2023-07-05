@@ -56,7 +56,11 @@ function ProductLookup() {
           <NavPanel activePanel={activePanel} setActivePanel={setActivePanel} />
           {productData && (
             <Card className="px-1 py-2 rounded-sm md:px-4 font-landing" id="scrollPane">
-              <DescriptionPane isActive={activePanel === 0} content={productData.description || ''} />
+              <DescriptionPane
+                isActive={activePanel === 0}
+                content={productData.description}
+                hash={productData.tx_hash}
+              />
               <CompanyPane isActive={activePanel === 1} producer={productData.producer} />
               <HistoriesPane
                 isActive={activePanel === 2}
